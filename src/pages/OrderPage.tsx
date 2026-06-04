@@ -162,11 +162,11 @@ export const OrderPage = () => {
             return (
               <div key={s.n} className="flex flex-col items-center gap-3">
                 <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
-                  step >= s.n ? 'bg-cobalt text-ink-deep ring-4 ring-cobalt/10' : 'bg-white border border-hairline-soft text-slate-400'
+                  step >= s.n ? 'bg-emerald-600 text-white ring-4 ring-emerald-600/20' : 'bg-white border border-slate-100 text-slate-400'
                 }`}>
                   {step > s.n ? <Check size={20} strokeWidth={3} /> : <Icon size={20} />}
                 </div>
-                <span className={`text-[11px] font-bold uppercase tracking-widest ${step >= s.n ? 'text-ink-deep' : 'text-slate-400'}`}>
+                <span className={`text-[11px] font-bold uppercase tracking-widest ${step >= s.n ? 'text-slate-900' : 'text-slate-400'}`}>
                   {s.label}
                 </span>
               </div>
@@ -183,19 +183,19 @@ export const OrderPage = () => {
                   {electronicTypes.map((type) => {
                     const IconComponent = iconMap[type.icon] || Package;
                     return (
-                      <Card key={type.id} className={`flex items-center justify-between transition-all duration-300 border-2 ${selectedItems[type.id] ? 'border-cobalt bg-cobalt/[0.02]' : 'border-hairline-soft'}`}>
+                      <Card key={type.id} className={`flex items-center justify-between transition-all duration-300 border-2 ${selectedItems[type.id] ? 'border-emerald-500 bg-emerald-50' : 'border-slate-100'}`}>
                         <div className="flex items-center gap-4 pr-4">
-                          <div className={`p-3 rounded-xl ${selectedItems[type.id] ? 'bg-cobalt text-ink-deep shadow-lg shadow-cobalt/20' : 'bg-slate-100 text-slate-500'}`}>
+                          <div className={`p-3 rounded-xl ${selectedItems[type.id] ? 'bg-emerald-100 text-emerald-600 shadow-lg shadow-emerald-500/20' : 'bg-slate-100 text-slate-500'}`}>
                             <IconComponent size={24} />
                           </div>
                           <div>
-                            <Typography variant="body" className="font-bold text-ink-deep">{type.name}</Typography>
+                            <Typography variant="body" className="font-bold text-slate-900">{type.name}</Typography>
                             <Typography variant="caption" className="text-slate-500 mt-0.5">
                               Rp{type.price.toLocaleString()} / unit
                             </Typography>
                           </div>
                         </div>
-                        <div className="flex items-center gap-4 flex-shrink-0 bg-white p-1 rounded-full border border-hairline-soft shadow-sm">
+                        <div className="flex items-center gap-4 flex-shrink-0 bg-white p-1 rounded-full border border-slate-100 shadow-sm">
                           <button 
                             onClick={() => updateQuantity(type.id, -1)}
                             className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-50 transition-all text-slate-500 disabled:opacity-20"
@@ -204,12 +204,12 @@ export const OrderPage = () => {
                           >
                             <Minus size={16} />
                           </button>
-                          <span className="w-4 text-center font-bold text-sm text-ink-deep">
+                          <span className="w-4 text-center font-bold text-sm text-slate-900">
                             {selectedItems[type.id] || 0}
                           </span>
                           <button 
                             onClick={() => updateQuantity(type.id, 1)}
-                            className="w-8 h-8 rounded-full bg-cobalt-deep text-white flex items-center justify-center hover:bg-cobalt transition-all shadow-md"
+                            className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center hover:bg-emerald-700 transition-all shadow-md"
                             aria-label={`Tambah ${type.name}`}
                           >
                             <Plus size={16} />
@@ -234,16 +234,16 @@ export const OrderPage = () => {
                       <Card 
                         key={addr.id} 
                         onClick={() => setSelectedAddressId(addr.id)}
-                        className={`cursor-pointer transition-all duration-300 border-2 ${selectedAddressId === addr.id ? 'border-cobalt bg-cobalt/[0.02] ring-1 ring-cobalt/20' : 'border-hairline-soft'}`}
+                        className={`cursor-pointer transition-all duration-300 border-2 ${selectedAddressId === addr.id ? 'border-emerald-500 bg-emerald-50 ring-1 ring-emerald-500/20' : 'border-slate-100'}`}
                       >
                         <div className="flex items-start gap-5">
-                          <div className={`p-3 rounded-xl transition-colors ${selectedAddressId === addr.id ? 'bg-cobalt text-ink-deep shadow-lg shadow-cobalt/20' : 'bg-slate-100 text-slate-500'}`}>
+                          <div className={`p-3 rounded-xl transition-colors ${selectedAddressId === addr.id ? 'bg-emerald-100 text-emerald-600 shadow-lg shadow-emerald-500/20' : 'bg-slate-100 text-slate-500'}`}>
                             <MapPin size={24} />
                           </div>
                           <div className="flex-grow">
                             <div className="flex items-center justify-between mb-1">
-                               <Typography variant="body" className="font-bold text-ink-deep">{addr.label}</Typography>
-                               {selectedAddressId === addr.id && <Check size={18} className="text-cobalt" />}
+                               <Typography variant="body" className="font-bold text-slate-900">{addr.label}</Typography>
+                               {selectedAddressId === addr.id && <Check size={18} className="text-emerald-600" />}
                             </div>
                             <Typography variant="caption" className="text-slate-500 block mb-2">{addr.fullName} • {addr.phoneNumber}</Typography>
                             <Typography variant="body" className="text-sm text-slate-600 line-clamp-2 leading-relaxed">{addr.fullAddress}</Typography>
@@ -267,10 +267,10 @@ export const OrderPage = () => {
             {step === 3 && (
               <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <Typography variant="h3" className="mb-8">Jadwalkan Penjemputan</Typography>
-                <Card className="border-2 border-hairline-soft p-8">
+                <Card className="border-2 border-slate-100 p-8">
                   <div className="space-y-8">
                     <div>
-                      <label htmlFor="pickupDate" className="block text-sm font-bold text-ink-deep mb-3 uppercase tracking-wider">Tanggal Penjemputan</label>
+                      <label htmlFor="pickupDate" className="block text-sm font-bold text-slate-900 mb-3 uppercase tracking-wider">Tanggal Penjemputan</label>
                       <div className="relative">
                         <input 
                           id="pickupDate"
@@ -283,8 +283,8 @@ export const OrderPage = () => {
                         <Calendar size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                       </div>
                     </div>
-                    <div className="bg-secondary/10 p-6 rounded-2xl flex gap-5 items-start">
-                      <div className="p-3 bg-white rounded-xl text-primary shadow-sm flex-shrink-0">
+                    <div className="bg-violet-50 p-6 rounded-2xl flex gap-5 items-start">
+                      <div className="p-3 bg-white rounded-xl text-emerald-600 shadow-sm flex-shrink-0">
                         <Package size={24} />
                       </div>
                       <Typography variant="body" className="text-[15px] text-slate-700 leading-relaxed">
@@ -294,21 +294,21 @@ export const OrderPage = () => {
                     </div>
                   </div>
                 </Card>
-                <Card className="border-2 border-hairline-soft p-8 mt-8">
+                <Card className="border-2 border-slate-100 p-8 mt-8">
                   <div className="space-y-6">
                     <div>
-                      <Typography variant="body" className="font-bold text-ink-deep mb-4">Detail Pengangkutan</Typography>
+                      <Typography variant="body" className="font-bold text-slate-900 mb-4">Detail Pengangkutan</Typography>
                       <div className="grid grid-cols-1 gap-3">
                         {transportOptions.map((option) => (
                           <button
                             key={option.id}
                             type="button"
                             onClick={() => setTransportMode(option.id)}
-                            className={`w-full rounded-3xl border p-4 text-left transition ${transportMode === option.id ? 'border-cobalt bg-cobalt/[0.08]' : 'border-hairline-soft bg-white hover:border-cobalt/70'}`}
+                            className={`w-full rounded-3xl border p-4 text-left transition ${transportMode === option.id ? 'border-emerald-500 bg-emerald-50' : 'border-slate-100 bg-white hover:border-emerald-500/70'}`}
                           >
                             <div className="flex items-center justify-between gap-4">
                               <div>
-                                <Typography variant="body" className="font-bold text-ink-deep">{option.label}</Typography>
+                                <Typography variant="body" className="font-bold text-slate-900">{option.label}</Typography>
                                 <Typography variant="caption" className="text-slate-500 block mt-1">{option.description}</Typography>
                               </div>
                             </div>
@@ -318,16 +318,16 @@ export const OrderPage = () => {
                     </div>
 
                     <div>
-                      <Typography variant="body" className="font-bold text-ink-deep mb-4">Tingkat Kerusakan</Typography>
+                      <Typography variant="body" className="font-bold text-slate-900 mb-4">Tingkat Kerusakan</Typography>
                       <div className="grid grid-cols-1 gap-3">
                         {damageOptions.map((option) => (
                           <button
                             key={option.id}
                             type="button"
                             onClick={() => setDamageSeverity(option.id)}
-                            className={`w-full rounded-3xl border p-4 text-left transition ${damageSeverity === option.id ? 'border-cobalt bg-cobalt/[0.08]' : 'border-hairline-soft bg-white hover:border-cobalt/70'}`}
+                            className={`w-full rounded-3xl border p-4 text-left transition ${damageSeverity === option.id ? 'border-emerald-500 bg-emerald-50' : 'border-slate-100 bg-white hover:border-emerald-500/70'}`}
                           >
-                            <Typography variant="body" className="font-bold text-ink-deep">{option.label}</Typography>
+                            <Typography variant="body" className="font-bold text-slate-900">{option.label}</Typography>
                           </button>
                         ))}
                       </div>
@@ -340,23 +340,23 @@ export const OrderPage = () => {
 
           {/* Right Column (Summary) */}
           <div className="lg:col-span-4">
-            <Card variant="feature" className="sticky top-24 border-2 border-hairline-soft !p-8 shadow-xl shadow-slate-200/50">
-              <Typography variant="h3" className="mb-8 pb-4 border-b border-hairline-soft">Ringkasan</Typography>
+            <Card variant="feature" className="sticky top-24 border-2 border-slate-100 !p-8 shadow-xl shadow-slate-200/50">
+              <Typography variant="h3" className="mb-8 pb-4 border-b border-slate-100">Ringkasan</Typography>
               <div className="space-y-5 mb-8">
-                <Typography variant="h3" className="text-ink-deep">Detail Pesanan</Typography>
+                <Typography variant="h3" className="text-slate-900">Detail Pesanan</Typography>
                 {Object.entries(selectedItems).length > 0 ? (
                   <div className="space-y-4">
                     {Object.entries(selectedItems).map(([id, qty]) => {
                       const type = electronicTypes.find((t) => t.id === id);
                       if (!type) return null;
                       return (
-                        <div key={id} className="rounded-3xl border border-hairline-soft bg-white p-4">
+                        <div key={id} className="rounded-3xl border border-slate-100 bg-white p-4">
                           <div className="flex justify-between items-center gap-4">
                             <div>
-                              <span className="text-sm font-bold text-ink-deep">{type.name}</span>
+                              <span className="text-sm font-bold text-slate-900">{type.name}</span>
                               <p className="text-xs text-slate-500 mt-1">Harga: Rp{type.price.toLocaleString()} / unit</p>
                             </div>
-                            <span className="text-sm font-bold text-ink-deep">x{qty}</span>
+                            <span className="text-sm font-bold text-slate-900">x{qty}</span>
                           </div>
                           <div className="mt-3 flex justify-between text-slate-500 text-xs">
                             <span>Subtotal</span>
@@ -376,7 +376,7 @@ export const OrderPage = () => {
                   <div className="flex justify-between items-center mb-1">
                     <Typography variant="caption" className="text-slate-500 font-bold uppercase tracking-widest">Total Estimasi</Typography>
                   </div>
-                  <Typography variant="h2" className="text-cobalt font-bold">Rp{totalEstimate.toLocaleString()}</Typography>
+                  <Typography variant="h2" className="text-emerald-600 font-bold">Rp{totalEstimate.toLocaleString()}</Typography>
                   <div className="flex justify-between text-sm text-slate-500">
                     <span>Biaya Pengangkutan</span>
                     <span>Rp{transportCost.toLocaleString()}</span>
@@ -393,15 +393,15 @@ export const OrderPage = () => {
               </div>
 
               <div className="space-y-5 mb-8">
-                <Typography variant="h3" className="text-ink-deep">Alamat Penjemputan</Typography>
+                <Typography variant="h3" className="text-slate-900">Alamat Penjemputan</Typography>
                 {selectedAddress ? (
-                  <Card className="border border-cobalt/20 bg-cobalt/5 p-4">
+                  <Card className="border border-emerald-500/20 bg-emerald-50/50 p-4">
                     <div className="flex items-start gap-4">
-                      <div className="p-3 rounded-2xl bg-white text-cobalt shadow-sm">
+                      <div className="p-3 rounded-2xl bg-white text-emerald-600 shadow-sm">
                         <MapPin size={22} />
                       </div>
                       <div className="space-y-1">
-                        <Typography variant="body" className="font-bold text-ink-deep">{selectedAddress.label}</Typography>
+                        <Typography variant="body" className="font-bold text-slate-900">{selectedAddress.label}</Typography>
                         <Typography variant="caption" className="text-slate-500 block">{selectedAddress.fullName} • {selectedAddress.phoneNumber}</Typography>
                         <Typography variant="body" className="text-sm text-slate-600 leading-relaxed">{selectedAddress.fullAddress}</Typography>
                       </div>
@@ -415,15 +415,15 @@ export const OrderPage = () => {
               </div>
 
               <div className="space-y-5 mb-4">
-                <Typography variant="h3" className="text-ink-deep">Jadwal Penjemputan</Typography>
+                <Typography variant="h3" className="text-slate-900">Jadwal Penjemputan</Typography>
                 {formattedPickupDate ? (
-                  <Card className="border border-cobalt/20 bg-cobalt/5 p-4">
+                  <Card className="border border-emerald-500/20 bg-emerald-50/50 p-4">
                     <div className="flex items-center gap-4">
-                      <div className="p-3 rounded-2xl bg-white text-cobalt shadow-sm">
+                      <div className="p-3 rounded-2xl bg-white text-emerald-600 shadow-sm">
                         <Calendar size={22} />
                       </div>
                       <div>
-                        <Typography variant="body" className="font-bold text-ink-deep">{formattedPickupDate}</Typography>
+                        <Typography variant="body" className="font-bold text-slate-900">{formattedPickupDate}</Typography>
                         <Typography variant="caption" className="text-slate-500 block">Penjemputan tersedia 09:00 - 17:00 WIB.</Typography>
                       </div>
                     </div>
@@ -439,7 +439,7 @@ export const OrderPage = () => {
                 <Button 
                   onClick={handleNextStep} 
                   variant="buy" 
-                  className="w-full flex items-center justify-center gap-3 h-14 shadow-xl shadow-cobalt/40 group relative overflow-hidden"
+                  className="w-full flex items-center justify-center gap-3 h-14 shadow-xl shadow-emerald-600/40 group relative overflow-hidden"
                   disabled={
                     (step === 1 && Object.keys(selectedItems).length === 0) ||
                     (step === 2 && !selectedAddressId) ||
@@ -453,7 +453,7 @@ export const OrderPage = () => {
                 {step > 1 && (
                   <button 
                     onClick={() => setStep(step - 1)}
-                    className="w-full py-2 text-[13px] font-bold text-slate-400 hover:text-ink-deep transition-colors uppercase tracking-widest"
+                    className="w-full py-2 text-[13px] font-bold text-slate-400 hover:text-slate-900 transition-colors uppercase tracking-widest"
                   >
                     Kembali
                   </button>

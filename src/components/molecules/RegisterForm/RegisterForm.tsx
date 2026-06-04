@@ -54,7 +54,7 @@ export const RegisterForm = () => {
           error={!!errors.fullName}
           placeholder="John Doe"
         />
-        {errors.fullName && <p className="mt-1 text-sm text-critical-strong">{errors.fullName.message}</p>}
+        {errors.fullName && <p className="mt-1 text-sm text-rose-600">{errors.fullName.message}</p>}
       </div>
 
       <div>
@@ -65,7 +65,7 @@ export const RegisterForm = () => {
           error={!!errors.email}
           placeholder="email@example.com"
         />
-        {errors.email && <p className="mt-1 text-sm text-critical-strong">{errors.email.message}</p>}
+        {errors.email && <p className="mt-1 text-sm text-rose-600">{errors.email.message}</p>}
       </div>
 
       <div>
@@ -76,7 +76,7 @@ export const RegisterForm = () => {
           error={!!errors.password}
           placeholder="Min. 8 characters"
         />
-        {errors.password && <p className="mt-1 text-sm text-critical-strong">{errors.password.message}</p>}
+        {errors.password && <p className="mt-1 text-sm text-rose-600">{errors.password.message}</p>}
       </div>
 
       <div>
@@ -87,7 +87,7 @@ export const RegisterForm = () => {
           error={!!errors.confirmPassword}
           placeholder="Repeat password"
         />
-        {errors.confirmPassword && <p className="mt-1 text-sm text-critical-strong">{errors.confirmPassword.message}</p>}
+        {errors.confirmPassword && <p className="mt-1 text-sm text-rose-600">{errors.confirmPassword.message}</p>}
       </div>
 
       <Button type="submit" className="w-full">

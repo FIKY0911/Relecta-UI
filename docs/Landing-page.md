@@ -1,24 +1,78 @@
+# Relecta: Buang Sampah Elektronik Tanpa Ribet
+
+## Product Requirements Document (PRD)
+
+Dokumen ini mendefinisikan visi, masalah, dan fitur utama dari produk berdasarkan implementasi antarmuka pengguna saat ini.
+
+### 1. Informasi Produk
+* **Nama Produk:** Relecta
+* **Slogan:** Buang Sampah Elektronik Tanpa Ribet
+* **Platform:** Aplikasi Web (*Responsive*)
+
+### 2. Ringkasan Eksekutif
+Relecta adalah platform yang menghubungkan individu dengan layanan pengelolaan limbah elektronik (*e-waste*) resmi. Platform ini bertujuan untuk menyederhanakan proses pembuangan barang elektronik bekas melalui sistem penjemputan (*pickup*) langsung dari rumah, guna mencegah kerusakan lingkungan dan melindungi privasi data pengguna.
+
+### 3. Masalah Utama yang Diselesaikan
+* **Kesehatan Lingkungan:** Limbah elektronik mengandung zat berbahaya (B3) seperti timbal dan merkuri yang merusak ekosistem jika dibuang sembarangan.
+* **Keamanan Data:** Perangkat bekas yang tidak dihancurkan dengan benar membawa risiko tinggi kebocoran data pribadi.
+* **Aksesibilitas:** Masyarakat umum kesulitan menemukan dan menjangkau tempat pembuangan limbah elektronik resmi yang terpercaya.
+
+### 4. Metrik Keberhasilan (Traction & Goals)
+Target capaian platform yang ditampilkan untuk membangun kepercayaan publik:
+* Total limbah elektronik yang tersalurkan: >15.400 kg
+* Jumlah pengguna aktif platform: >4.800 pengguna
+* Tingkat kepuasan layanan: 98%
+
+### 5. Alur Pengguna (User Flow) Utama
+Untuk meminimalkan hambatan teknis, pengguna dapat membuang sampah elektronik melalui 4 langkah sederhana:
+1. **Pemilihan Perangkat:** Pengguna mengidentifikasi dan memilih jenis perangkat elektronik yang akan dibuang.
+2. **Penentuan Lokasi:** Pengguna memasukkan alamat atau titik koordinat penjemputan barang.
+3. **Proses Penjemputan:** Kurir mitra mengambil barang langsung dari lokasi yang telah ditentukan.
+4. **Pengelolaan Resmi:** Limbah dibawa ke fasilitas resmi untuk didaur ulang atau dihancurkan secara aman.
+
+### 6. Arsitektur Teknis & Standar Industri
+Untuk memastikan skalabilitas dan keamanan data, pengembangan sistem ini akan dipisah secara arsitektural:
+* **Frontend (Presentational Layer):** Menggunakan *Next.js* untuk menangani antarmuka (UI), *routing*, dan menampilkan data secara *client-side/server-side* yang optimal untuk performa dan SEO.
+* **Backend (Business Logic & Security):** Menggunakan *Express* (atau di masa depan direfaktor ke *NestJS*) yang bertugas murni sebagai penyedia API, memproses logika penjadwalan, mengelola antrean kurir, dan memvalidasi keamanan otentikasi.
+
+---
+
+## Palet Warna (Color Palette)
+
+Aplikasi Relecta menggunakan kombinasi warna bernuansa alam (hijau) sebagai warna utama untuk merepresentasikan lingkungan, didukung oleh warna aksen untuk menyorot informasi penting.
+
+| Kategori | Tailwind Classes | Perkiraan Visual | Penggunaan Utama dalam Kode |
+| :--- | :--- | :--- | :--- |
+| **Primary (Emerald)** | `emerald-50`, `emerald-100`, `emerald-300`, `emerald-500`, `emerald-600`, `emerald-700` | Hijau Zamrud (Eco/Nature) | Warna *branding* utama, tombol CTA (*Jadwalkan Pickup*), lencana solusi ramah lingkungan, ikon daur ulang, dan aksen garis. |
+| **Accent 1 (Violet)** | `violet-50`, `violet-100`, `violet-600` | Ungu Modern | Efek *gradient blur background*, dekorasi ilustrasi, dan indikator visual untuk isu keamanan (*Risiko Kebocoran Data*). |
+| **Accent 2 (Amber)** | `amber-50`, `amber-100`, `amber-200`, `amber-500` | Kuning Oranye | Elemen peringatan/tantangan (*Akses Pengelola Resmi*), lencana verifikasi resmi, dan detail visual pada ilustrasi kotak kurir. |
+| **Accent 3 (Cyan)** | `cyan-50` | Biru Muda | Variasi pemanis untuk efek dekorasi *blur background* di bagian bawah halaman. |
+| **Neutral / Text (Slate)**| `slate-100`, `slate-200`, `slate-300`, `slate-500`, `slate-600`, `slate-700`, `slate-800`, `slate-900`, `slate-950` | Abu-abu Gelap Kebiruan | Teks utama (*heading* & *body copy*), garis pembatas (*border*), latar belakang gelap pada kontainer CTA, dan representasi warna perangkat elektronik. |
+| **Base** | `white`, `white/90` | Putih Bersih | Latar belakang halaman utama, warna dasar kartu komponen (*cards*), dan teks di atas latar belakang gelap. |
+
+---
+
+## Komponen Frontend: `LandingPage.tsx`
+
+Berikut adalah implementasi UI beranda menggunakan React, Tailwind CSS, dan Lucide Icons.
+
+```tsx
 // src/pages/LandingPage.tsx
 
 import {
   BadgeCheck,
   CalendarDays,
-  CircleDollarSign,
   FlaskConical,
   Leaf,
   Lock,
-  Mail,
-  Map,
   MapPin,
   Menu,
   PlayCircle,
   Recycle,
   ShieldCheck,
   Star,
-  Truck,
   Users,
 } from "lucide-react";
-import { Link } from "react-router-dom";
 
 type StatItem = {
   icon: React.ReactNode;
@@ -58,44 +112,23 @@ const stats: StatItem[] = [
 const problems: ProblemItem[] = [
   {
     icon: <FlaskConical size={34} />,
-    title: "Kesehatan Lingkungan",
+    title: "Mengandung Bahan Berbahaya B3",
     description:
-      "Limbah elektronik mengandung zat berbahaya (B3) seperti timbal dan merkuri yang merusak ekosistem jika dibuang sembarangan.",
+      "Limbah elektronik mengandung zat berbahaya seperti timbal, merkuri, dan kadmium yang dapat merusak lingkungan dan kesehatan.",
     color: "green",
   },
   {
     icon: <Lock size={34} />,
-    title: "Keamanan Data",
+    title: "Risiko Kebocoran Data",
     description:
-      "Perangkat bekas yang tidak dihancurkan dengan benar membawa risiko tinggi kebocoran data pribadi.",
+      "Perangkat yang tidak dikelola dengan benar berisiko menyebabkan kebocoran data pribadi dan informasi penting.",
     color: "purple",
   },
   {
     icon: <MapPin size={34} />,
-    title: "Aksesibilitas",
+    title: "Sulitnya Akses Pengelola Resmi",
     description:
-      "Masyarakat umum kesulitan menemukan dan menjangkau tempat pembuangan limbah elektronik resmi yang terpercaya.",
-    color: "orange",
-  },
-];
-
-const features = [
-  {
-    icon: <Map size={34} />,
-    title: "Maps Interaktif",
-    description: "Temukan lokasi bank sampah elektronik terdekat dengan navigasi yang mudah.",
-    color: "purple",
-  },
-  {
-    icon: <Truck size={34} />,
-    title: "Pemesanan Kurir",
-    description: "Jadwalkan penjemputan limbah elektronik langsung dari rumah atau kantor Anda.",
-    color: "green",
-  },
-  {
-    icon: <CircleDollarSign size={34} />,
-    title: "Estimator Nilai",
-    description: "Hitung estimasi nilai ekonomis limbah Anda sebelum melakukan pemesanan.",
+      "Banyak orang kesulitan menemukan layanan pengelolaan limbah elektronik resmi yang praktis dan terpercaya.",
     color: "orange",
   },
 ];
@@ -120,9 +153,9 @@ const getProblemStyle = (color: string) => {
   return styles[color];
 };
 
-export const LandingPage = () => {
+export default function LandingPage() {
   return (
-    <main className="relative min-h-screen overflow-x-hidden bg-white font-sans text-slate-900">
+    <main className="min-h-screen overflow-hidden bg-white text-slate-900">
       {/* Background decoration */}
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute left-1/2 top-20 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-violet-100/40 blur-3xl" />
@@ -131,19 +164,15 @@ export const LandingPage = () => {
       </div>
 
       {/* Navbar */}
-      <header className="fixed left-1/2 top-4 z-50 flex w-[94%] max-w-7xl -translate-x-1/2 items-center justify-between rounded-3xl border border-slate-100 bg-white/80 px-6 py-4 shadow-[0_18px_60px_rgba(15,23,42,0.08)] backdrop-blur-md transition-all duration-300">
-        <Link 
-          to="/" 
-          className="flex items-center gap-3"
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        >
+      <header className="mx-auto mt-4 flex w-[94%] max-w-7xl items-center justify-between rounded-3xl border border-slate-100 bg-white/90 px-6 py-4 shadow-[0_18px_60px_rgba(15,23,42,0.08)] backdrop-blur">
+        <a href="#" className="flex items-center gap-3">
           <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-600">
             <Recycle size={27} strokeWidth={2.8} />
           </div>
           <span className="text-2xl font-extrabold tracking-tight text-emerald-600">
             Relecta
           </span>
-        </Link>
+        </a>
 
         <nav className="hidden items-center gap-9 text-sm font-semibold text-slate-700 lg:flex">
           <a href="#" className="relative text-emerald-600">
@@ -153,27 +182,24 @@ export const LandingPage = () => {
           <a href="#problem" className="transition hover:text-emerald-600">
             Masalah
           </a>
+          <a href="#cara-kerja" className="transition hover:text-emerald-600">
+            Cara Kerja
+          </a>
           <a href="#fitur" className="transition hover:text-emerald-600">
             Fitur
           </a>
-          <a href="#cara-kerja" className="transition hover:text-emerald-600">
-            Cara Kerja
+          <a href="#manfaat" className="transition hover:text-emerald-600">
+            Manfaat
           </a>
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <Link
-            to="/login"
-            className="rounded-full border border-emerald-500 px-7 py-3 text-sm font-bold text-emerald-600 transition hover:bg-emerald-50"
-          >
+          <button className="rounded-full border border-emerald-500 px-7 py-3 text-sm font-bold text-emerald-600 transition hover:bg-emerald-50">
             Masuk
-          </Link>
-          <Link
-            to="/register"
-            className="rounded-full bg-emerald-600 px-7 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-500/25 transition hover:bg-emerald-700"
-          >
+          </button>
+          <button className="rounded-full bg-emerald-600 px-7 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-500/25 transition hover:bg-emerald-700">
             Jadwalkan Pickup
-          </Link>
+          </button>
         </div>
 
         <button className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 lg:hidden">
@@ -182,7 +208,7 @@ export const LandingPage = () => {
       </header>
 
       {/* Hero */}
-      <section className="mx-auto grid w-[90%] max-w-7xl items-center gap-14 pb-20 pt-32 lg:grid-cols-2 lg:pt-36">
+      <section className="mx-auto grid w-[90%] max-w-7xl items-center gap-14 pb-20 pt-20 lg:grid-cols-2 lg:pt-24">
         <div>
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-700">
             <Leaf size={18} />
@@ -206,13 +232,10 @@ export const LandingPage = () => {
           </p>
 
           <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-            <Link
-              to="/register"
-              className="inline-flex items-center justify-center gap-3 rounded-full bg-emerald-600 px-8 py-4 font-bold text-white shadow-xl shadow-emerald-500/25 transition hover:-translate-y-0.5 hover:bg-emerald-700"
-            >
+            <button className="inline-flex items-center justify-center gap-3 rounded-full bg-emerald-600 px-8 py-4 font-bold text-white shadow-xl shadow-emerald-500/25 transition hover:-translate-y-0.5 hover:bg-emerald-700">
               <CalendarDays size={20} />
               Jadwalkan Sekarang
-            </Link>
+            </button>
 
             <button className="inline-flex items-center justify-center gap-3 rounded-full border border-emerald-500 bg-white px-8 py-4 font-bold text-emerald-600 transition hover:-translate-y-0.5 hover:bg-emerald-50">
               <PlayCircle size={21} />
@@ -237,7 +260,7 @@ export const LandingPage = () => {
         </div>
 
         {/* Hero Illustration */}
-        <div className="relative mx-auto hidden min-h-[520px] w-full max-w-xl lg:block">
+        <div className="relative mx-auto min-h-[520px] w-full max-w-xl">
           <div className="absolute right-0 top-10 h-[430px] w-[430px] rounded-full bg-emerald-100/70" />
           <div className="absolute left-8 top-20 h-[360px] w-[360px] rounded-full bg-violet-100/60" />
 
@@ -402,46 +425,6 @@ export const LandingPage = () => {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="fitur" className="mt-20 py-24">
-        <div className="mx-auto w-[90%] max-w-7xl">
-          <div className="mb-10 flex flex-col items-center text-center">
-            <p className="mb-3 text-sm font-bold uppercase tracking-[0.2em] text-violet-600">
-              Fitur Unggulan
-            </p>
-            <h2 className="text-4xl font-black tracking-tight text-slate-950">
-              Kemudahan dalam Setiap Langkah
-            </h2>
-            <div className="mt-4 h-1.5 w-20 rounded-full bg-violet-500" />
-          </div>
-
-          <div className="grid gap-7 md:grid-cols-3">
-            {features.map((item) => (
-              <div
-                key={item.title}
-                className="rounded-[2rem] border border-slate-100 bg-white p-8 shadow-[0_18px_50px_rgba(15,23,42,0.08)] transition hover:-translate-y-1 hover:shadow-[0_24px_70px_rgba(15,23,42,0.12)]"
-              >
-                <div
-                  className={`mb-7 flex h-20 w-20 items-center justify-center rounded-[1.7rem] ${getProblemStyle(
-                    item.color
-                  )}`}
-                >
-                  {item.icon}
-                </div>
-
-                <h3 className="text-xl font-extrabold text-slate-900">
-                  {item.title}
-                </h3>
-
-                <p className="mt-4 leading-7 text-slate-600">
-                  {item.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* How It Works */}
       <section id="cara-kerja" className="py-24">
         <div className="mx-auto w-[90%] max-w-7xl">
@@ -460,35 +443,24 @@ export const LandingPage = () => {
 
           <div className="grid gap-7 md:grid-cols-4">
             {[
-              {
-                title: "Pemilihan Perangkat",
-                desc: "Pengguna mengidentifikasi dan memilih jenis perangkat elektronik yang akan dibuang.",
-              },
-              {
-                title: "Penentuan Lokasi",
-                desc: "Pengguna memasukkan alamat atau titik koordinat penjemputan barang.",
-              },
-              {
-                title: "Proses Penjemputan",
-                desc: "Kurir mitra mengambil barang langsung dari lokasi yang telah ditentukan.",
-              },
-              {
-                title: "Pengelolaan Resmi",
-                desc: "Limbah dibawa ke fasilitas resmi untuk didaur ulang atau dihancurkan secara aman.",
-              },
+              "Pilih jenis perangkat",
+              "Tentukan lokasi pickup",
+              "Kurir mengambil barang",
+              "Limbah dikelola resmi",
             ].map((step, index) => (
               <div
-                key={step.title}
+                key={step}
                 className="relative rounded-3xl border border-slate-100 bg-white p-7 shadow-lg shadow-slate-200/60"
               >
                 <div className="mb-7 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-600 text-xl font-black text-white">
                   {index + 1}
                 </div>
                 <h3 className="text-lg font-extrabold text-slate-900">
-                  {step.title}
+                  {step}
                 </h3>
                 <p className="mt-3 leading-7 text-slate-600">
-                  {step.desc}
+                  Proses mudah dengan panduan jelas agar pengguna dapat
+                  menyalurkan e-waste secara bertanggung jawab.
                 </p>
               </div>
             ))}
@@ -497,159 +469,30 @@ export const LandingPage = () => {
       </section>
 
       {/* CTA */}
-      <section className="relative mx-auto mb-20 w-[90%] max-w-7xl">
-        {/* Ambient Glow */}
-        <div className="absolute -inset-1 rounded-[3rem] bg-gradient-to-r from-emerald-500 to-violet-500 opacity-20 blur-2xl"></div>
-        
-        <div className="relative overflow-hidden rounded-[2.5rem] border border-slate-800 bg-gradient-to-br from-slate-900 to-slate-950 p-10 text-white shadow-2xl md:p-14">
-          
-          {/* Subtle Background Elements */}
-          <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-emerald-500/20 blur-3xl"></div>
-          <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-violet-500/20 blur-3xl"></div>
-
-          <div className="relative z-10 grid items-center gap-10 md:grid-cols-[1.4fr_0.6fr]">
+      <section className="mx-auto mb-20 w-[90%] max-w-7xl">
+        <div className="overflow-hidden rounded-[2.5rem] bg-slate-950 p-10 text-white shadow-2xl md:p-14">
+          <div className="grid items-center gap-10 md:grid-cols-[1.4fr_0.6fr]">
             <div>
-              <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-sm font-bold text-emerald-300 backdrop-blur-md">
-                <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400"></span>
+              <p className="mb-4 inline-flex rounded-full bg-emerald-500/15 px-4 py-2 text-sm font-bold text-emerald-300">
                 Mulai dari rumah Anda
               </p>
-              <h2 className="bg-gradient-to-r from-white to-slate-300 bg-clip-text text-4xl font-black tracking-tight text-transparent md:text-5xl">
+              <h2 className="text-4xl font-black tracking-tight md:text-5xl">
                 Punya perangkat elektronik tidak terpakai?
               </h2>
-              <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-400">
+              <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300">
                 Jadwalkan penjemputan sekarang dan bantu kurangi limbah
                 elektronik berbahaya dengan cara yang aman dan resmi.
               </p>
             </div>
 
             <div className="flex md:justify-end">
-              <Link
-                to="/register"
-                className="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-emerald-500 px-9 py-4 font-extrabold text-white shadow-xl shadow-emerald-500/25 transition-all duration-300 hover:scale-105 hover:bg-emerald-600 hover:shadow-emerald-500/40"
-              >
-                <span className="relative z-10 flex items-center gap-2">
-                  Jadwalkan Pickup
-                  <svg className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </span>
-                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full"></div>
-              </Link>
+              <button className="rounded-full bg-emerald-500 px-9 py-4 font-extrabold text-white shadow-xl shadow-emerald-500/25 transition hover:bg-emerald-600">
+                Jadwalkan Pickup
+              </button>
             </div>
           </div>
         </div>
       </section>
-
-      {/* Footer Section (NEW) */}
-      <footer className="border-t border-slate-200 bg-slate-50 pb-8 pt-20">
-        <div className="mx-auto w-[90%] max-w-7xl">
-          <div className="grid gap-12 lg:grid-cols-4 lg:gap-8">
-            {/* Brand Information */}
-            <div className="lg:col-span-2">
-              <Link 
-                to="/" 
-                className="flex items-center gap-3"
-                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              >
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600">
-                  <Recycle size={24} strokeWidth={2.5} />
-                </div>
-                <span className="text-2xl font-extrabold tracking-tight text-emerald-600">
-                  Relecta
-                </span>
-              </Link>
-              <p className="mt-6 max-w-md text-base leading-7 text-slate-600">
-                Solusi cerdas untuk mengelola limbah elektronik Anda. Kami
-                menghubungkan masyarakat dengan mitra pengelola daur ulang resmi
-                demi menjaga kelestarian bumi dan meminimalisir risiko bahaya
-                e-waste.
-              </p>
-
-              {/* Social Media */}
-              <div className="mt-8 flex gap-4">
-                <a
-                  href="#"
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-slate-500 shadow-sm transition hover:bg-emerald-600 hover:text-white"
-                >
-                  <Mail size={20} />
-                </a>
-              </div>
-            </div>
-
-            {/* Quick Links */}
-            <div>
-              <h3 className="text-lg font-bold text-slate-900">Pintasan</h3>
-              <ul className="mt-6 space-y-4 text-slate-600">
-                <li>
-                  <a href="#" className="transition hover:text-emerald-600">
-                    Beranda
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#cara-kerja"
-                    className="transition hover:text-emerald-600"
-                  >
-                    Cara Kerja
-                  </a>
-                </li>
-                <li>
-                  <a href="#fitur" className="transition hover:text-emerald-600">
-                    Fitur Layanan
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="transition hover:text-emerald-600">
-                    Lokasi Drop-off
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Legal Links */}
-            <div>
-              <h3 className="text-lg font-bold text-slate-900">Perusahaan</h3>
-              <ul className="mt-6 space-y-4 text-slate-600">
-                <li>
-                  <a href="#" className="transition hover:text-emerald-600">
-                    Tentang Kami
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="transition hover:text-emerald-600">
-                    Kebijakan Privasi
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="transition hover:text-emerald-600">
-                    Syarat & Ketentuan
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="transition hover:text-emerald-600">
-                    Bantuan & FAQ
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Copyright Area */}
-          <div className="mt-16 flex flex-col items-center justify-between border-t border-slate-200 pt-8 sm:flex-row">
-            <p className="text-sm text-slate-500">
-              © 2026 Relecta. Hak Cipta Dilindungi.
-            </p>
-            <div className="mt-4 flex gap-6 text-sm font-medium text-slate-500 sm:mt-0">
-              <a href="#" className="transition hover:text-emerald-600">
-                Indonesia
-              </a>
-              <a href="#" className="transition hover:text-emerald-600">
-                English
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
     </main>
   );
-};
+}

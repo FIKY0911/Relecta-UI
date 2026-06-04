@@ -7,9 +7,9 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
 
 export const Card = ({ children, variant = 'default', className = '', ...props }: CardProps) => {
   const variants = {
-    default: 'bg-white rounded-xxl border border-hairline-soft p-6',
-    feature: 'bg-white rounded-xxxl p-xxl border border-hairline-soft shadow-sm',
-    promo: 'bg-ink-deep text-white rounded-xxxl p-xxxl',
+    default: 'bg-white rounded-2xl border border-slate-100 shadow-lg shadow-slate-200/60 p-6',
+    feature: 'bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm hover:shadow-md transition-shadow',
+    promo: 'bg-slate-950 text-white rounded-[2.5rem] p-10',
   };
 
   return (

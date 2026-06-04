@@ -40,7 +40,7 @@ export const LoginForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {errors.root && (
-        <div className="p-3 bg-red-50 border border-critical-strong rounded-lg text-sm text-critical-strong font-medium">
+        <div className="p-3 bg-red-50 border border-rose-600 rounded-lg text-sm text-rose-600 font-medium">
           {errors.root.message}
         </div>
       )}
@@ -53,7 +53,7 @@ export const LoginForm = () => {
           error={!!errors.email}
           placeholder="email@example.com"
         />
-        {errors.email && <p className="mt-1 text-sm text-critical-strong">{errors.email.message}</p>}
+        {errors.email && <p className="mt-1 text-sm text-rose-600">{errors.email.message}</p>}
       </div>
 
       <div>
@@ -64,7 +64,7 @@ export const LoginForm = () => {
           error={!!errors.password}
           placeholder="Enter your password"
         />
-        {errors.password && <p className="mt-1 text-sm text-critical-strong">{errors.password.message}</p>}
+        {errors.password && <p className="mt-1 text-sm text-rose-600">{errors.password.message}</p>}
       </div>
 
       <Button type="submit" variant="buy" className="w-full">

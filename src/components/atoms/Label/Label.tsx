@@ -7,7 +7,7 @@ interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
 export const Label = ({ children, className = '', ...props }: LabelProps) => {
   return (
     <label 
-      className={`block text-sm font-bold text-ink mb-2 ${className}`} 
+      className={`block text-sm font-bold text-slate-900 mb-2 ${className}`} 
       {...props}
     >
       {children}

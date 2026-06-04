@@ -8,9 +8,9 @@ export const LoginPage = () => {
       title="Welcome back"
       subtitle="Log in to manage your e-waste pickups."
       footer={
-        <p className="text-sm text-ink">
+        <p className="text-sm text-slate-600">
           Don't have an account?{' '}
-          <Link to="/register" className="font-bold text-fb-blue hover:underline">
+          <Link to="/register" className="font-bold text-emerald-600 hover:underline">
             Sign up
           </Link>
         </p>

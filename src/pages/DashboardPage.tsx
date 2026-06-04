@@ -15,8 +15,8 @@ export const DashboardPage = () => {
   const addresses = allAddresses.filter((address) => address.userId === currentUser?.id);
   
   const stats = [
-    { label: 'Total Pesanan', value: orders.length, icon: Package, color: 'text-cobalt bg-cobalt/10' },
-    { label: 'Alamat Tersimpan', value: addresses.length, icon: MapPin, color: 'text-secondary bg-secondary/10' },
+    { label: 'Total Pesanan', value: orders.length, icon: Package, color: 'text-emerald-600 bg-emerald-600/10' },
+    { label: 'Alamat Tersimpan', value: addresses.length, icon: MapPin, color: 'text-violet-600 bg-violet-600/10' },
   ];
 
   return (
@@ -35,9 +35,9 @@ export const DashboardPage = () => {
         ))}
         
         <Link to="/order">
-          <Card className="flex items-center justify-between bg-cobalt text-white group cursor-pointer hover:bg-cobalt-deep transition-all">
+          <div className="flex items-center justify-between bg-emerald-600 text-white group cursor-pointer hover:bg-emerald-700 transition-all rounded-2xl border border-emerald-600 shadow-lg shadow-emerald-600/30 p-6">
             <div className="flex items-center gap-4">
-              <div className="p-4 rounded-xxl bg-white/20 group-hover:bg-white/30 transition-all">
+              <div className="p-4 rounded-2xl bg-white/20 group-hover:bg-white/30 transition-all">
                 <Plus size={28} />
               </div>
               <div>
@@ -46,7 +46,7 @@ export const DashboardPage = () => {
               </div>
             </div>
             <ArrowRight size={24} className="text-white/40 group-hover:translate-x-1 transition-all" />
-          </Card>
+          </div>
         </Link>
       </div>
 
@@ -54,7 +54,7 @@ export const DashboardPage = () => {
         <section>
           <div className="flex items-center justify-between mb-6">
             <Typography variant="h3">Aktivitas Terakhir</Typography>
-            <Link to="/history" className="text-sm font-bold text-fb-blue hover:underline">Lihat Semua</Link>
+            <Link to="/history" className="text-sm font-bold text-emerald-600 hover:underline">Lihat Semua</Link>
           </div>
           
           <div className="space-y-4">
@@ -73,7 +73,7 @@ export const DashboardPage = () => {
                     </div>
                   </div>
                   <div className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                    order.status === 'pending' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700'
+                    order.status === 'pending' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'
                   }`}>
                     {order.status}
                   </div>
@@ -93,7 +93,7 @@ export const DashboardPage = () => {
         <section>
           <div className="flex items-center justify-between mb-6">
             <Typography variant="h3">Bank Sampah Terdekat</Typography>
-            <Link to="/maps" className="text-sm font-bold text-fb-blue hover:underline">Lihat Peta</Link>
+            <Link to="/maps" className="text-sm font-bold text-emerald-600 hover:underline">Lihat Peta</Link>
           </div>
           
           <Card className="p-0 overflow-hidden">

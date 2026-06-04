@@ -4,25 +4,25 @@
 
 @layer base {
   body {
-    @apply bg-background text-ink font-sans antialiased;
+    @apply bg-slate-50 text-slate-900 font-sans antialiased;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-medium text-ink-deep;
+    @apply font-medium text-slate-950;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-cobalt text-white px-[30px] py-[14px] rounded-full font-bold text-[14px] transition-colors hover:bg-cobalt-deep;
+    @apply bg-emerald-600 text-white px-[30px] py-[14px] rounded-full font-bold text-[14px] transition-colors hover:bg-emerald-700 shadow-lg shadow-emerald-600/20;
   }
 
   .btn-buy {
-    @apply bg-cobalt text-white px-[30px] py-[14px] rounded-full font-bold text-[14px] border-2 border-cobalt transition-all duration-200 shadow-lg shadow-cobalt/20;
+    @apply bg-emerald-600 text-white px-[30px] py-[14px] rounded-full font-bold text-[14px] border-2 border-emerald-600 transition-all duration-200 shadow-lg shadow-emerald-600/20;
   }
 
   .btn-buy:hover:not(:disabled) {
-    @apply bg-cobalt-deep border-cobalt-deep -translate-y-px shadow-xl shadow-cobalt/30;
+    @apply bg-emerald-700 border-emerald-700 -translate-y-px shadow-xl shadow-emerald-600/30;
   }
 
   .btn-buy:active:not(:disabled) {
@@ -30,58 +30,19 @@
   }
 
   .btn-buy:disabled {
-    @apply opacity-50 cursor-not-allowed bg-slate-50 border-slate-200 text-slate-400 shadow-none;
+    @apply opacity-50 cursor-not-allowed bg-slate-100 border-slate-200 text-slate-400 shadow-none;
   }
 
   .btn-secondary {
-    @apply border-2 border-cobalt text-cobalt px-[28px] py-[12px] rounded-full font-bold text-[14px] transition-colors hover:bg-cobalt hover:text-white;
+    @apply border-2 border-emerald-600 text-emerald-600 px-[28px] py-[12px] rounded-full font-bold text-[14px] transition-colors hover:bg-emerald-50;
   }
 
   .input-text {
-    @apply w-full bg-white border border-hairline rounded-lg px-base py-3 text-[16px] transition-all focus:border-2 focus:border-fb-blue focus:outline-none placeholder:text-gray-400;
+    @apply w-full bg-white border border-slate-200 rounded-lg px-base py-3 text-[16px] transition-all focus:border-2 focus:border-emerald-500 focus:outline-none placeholder:text-slate-400;
   }
 
   .input-error {
-    @apply border-critical-strong focus:border-critical-strong;
-  }
-}
-
-@layer utilities {
-  .bg-cobalt {
-    background-color: #B5BAFF !important;
-  }
-  .bg-cobalt-deep {
-    background-color: #9EA5FF !important;
-  }
-  .text-cobalt {
-    color: #B5BAFF !important;
-  }
-  .border-cobalt {
-    border-color: #B5BAFF !important;
-  }
-  .border-cobalt-deep {
-    border-color: #9EA5FF !important;
-  }
-  .text-cobalt-deep {
-    color: #9EA5FF !important;
-  }
-  .ring-cobalt {
-    --tw-ring-color: rgba(181, 186, 255, 1) !important;
-  }
-  .ring-cobalt-deep {
-    --tw-ring-color: rgba(158, 165, 255, 1) !important;
-  }
-  .shadow-cobalt\/20 {
-    --tw-shadow-color: rgba(181, 186, 255, 0.2) !important;
-    --tw-shadow: var(--tw-shadow-colored) !important;
-  }
-  .shadow-cobalt\/30 {
-    --tw-shadow-color: rgba(181, 186, 255, 0.3) !important;
-    --tw-shadow: var(--tw-shadow-colored) !important;
-  }
-  .shadow-cobalt\/40 {
-    --tw-shadow-color: rgba(181, 186, 255, 0.4) !important;
-    --tw-shadow: var(--tw-shadow-colored) !important;
+    @apply border-rose-500 focus:border-rose-500;
   }
 }
 
