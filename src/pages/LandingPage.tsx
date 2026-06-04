@@ -44,8 +44,8 @@ const STATS = [
 ];
 
 const BENEFITS = [
-  { icon: <ShieldCheck size={20} className="text-green-600" />, text: 'Layanan resmi milik pemerintah yang terjamin keamanannya.' },
-  { icon: <Zap size={20} className="text-amber-500" />, text: 'Proses pemesanan yang cepat, transparan, dan real-time.' },
+  { icon: <ShieldCheck size={20} className="text-green-600" />, text: 'Layanan yang mendukung pemerintah.' },
+  { icon: <Zap size={20} className="text-amber-500" />, text: 'Proses permintaan pemangkutan yang mudah.' },
   { icon: <Leaf size={20} className="text-emerald-500" />, text: 'Membantu mengurangi pencemaran zat kimia beracun di lingkungan.' },
 ];
 
