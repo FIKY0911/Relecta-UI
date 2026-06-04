@@ -20,6 +20,8 @@ import {
   Users,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import LogoImage from "../assets/Logo.jpeg";
+import BannerImage from "../assets/Banner.png";
 
 type StatItem = {
   icon: React.ReactNode;
@@ -147,7 +149,7 @@ export const LandingPage = () => {
         >
           <div className="h-12 w-12 rounded-2xl overflow-hidden shadow-lg shadow-emerald-800/40 flex-shrink-0 transition-transform group-hover:scale-105">
             <img
-              src="/src/assets/Logo.jpeg"
+              src={LogoImage}
               alt="Relecta Logo"
               className="h-full w-full object-cover"
             />
@@ -266,7 +268,7 @@ export const LandingPage = () => {
         {/* Hero Illustration */}
         <div className="relative mx-auto hidden w-full max-w-xl lg:flex items-center justify-center">
           <img
-            src="/src/assets/Banner.png"
+            src={BannerImage}
             alt="Relecta – Pilah Sampah Elektronik"
             className="w-full h-auto object-contain select-none scale-110"
             style={{ mixBlendMode: 'multiply' }}
@@ -554,7 +556,7 @@ export const LandingPage = () => {
               >
               <div className="h-10 w-10 rounded-xl overflow-hidden flex-shrink-0">
                   <img
-                    src="/src/assets/Logo.jpeg"
+                    src={LogoImage}
                     alt="Relecta Logo"
                     className="h-full w-full object-cover"
                   />
