@@ -13,7 +13,7 @@ export const DashboardPage = () => {
   const orders = useOrderStore((state) => state.orders).filter(o => o.userId === currentUser?.id);
   const allAddresses = useAddressStore((state) => state.addresses);
   const addresses = allAddresses.filter((address) => address.userId === currentUser?.id);
-  
+
   const stats = [
     { label: 'Total Pesanan', value: orders.length, icon: Package, color: 'text-emerald-600 bg-emerald-600/10' },
     { label: 'Alamat Tersimpan', value: addresses.length, icon: MapPin, color: 'text-violet-600 bg-violet-600/10' },
@@ -33,7 +33,7 @@ export const DashboardPage = () => {
             </div>
           </Card>
         ))}
-        
+
         <Link to="/order">
           <div className="flex items-center justify-between bg-emerald-600 text-white group cursor-pointer hover:bg-emerald-700 transition-all rounded-2xl border border-emerald-600 shadow-lg shadow-emerald-600/30 p-6">
             <div className="flex items-center gap-4">
@@ -56,7 +56,7 @@ export const DashboardPage = () => {
             <Typography variant="h3">Aktivitas Terakhir</Typography>
             <Link to="/history" className="text-sm font-bold text-emerald-600 hover:underline">Lihat Semua</Link>
           </div>
-          
+
           <div className="space-y-4">
             {orders.length > 0 ? (
               orders.slice(0, 3).map((order) => (
@@ -72,9 +72,8 @@ export const DashboardPage = () => {
                       </Typography>
                     </div>
                   </div>
-                  <div className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                    order.status === 'pending' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'
-                  }`}>
+                  <div className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${order.status === 'pending' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'
+                    }`}>
                     {order.status}
                   </div>
                 </Card>
@@ -95,18 +94,30 @@ export const DashboardPage = () => {
             <Typography variant="h3">Bank Sampah Terdekat</Typography>
             <Link to="/maps" className="text-sm font-bold text-emerald-600 hover:underline">Lihat Peta</Link>
           </div>
-          
-          <Card className="p-0 overflow-hidden">
-             <div className="h-48 bg-slate-200 animate-pulse flex items-center justify-center text-slate-400">
-               Peta Statis Placeholder
-             </div>
-             <div className="p-6">
-                <Typography variant="body" className="font-bold mb-1">Bank Sampah Induk Jakarta Pusat</Typography>
-                <Typography variant="caption" className="text-slate-500 mb-4">Jl. Rawasari Selatan No.1, Cempaka Putih</Typography>
-                <Link to="/maps">
-                  <Button variant="secondary" className="w-full">Lihat Rute</Button>
-                </Link>
-             </div>
+
+          <Card className="p-0 overflow-hidden border border-slate-100 shadow-md group">
+            <div className="h-48 bg-slate-50 relative flex items-center justify-center overflow-hidden">
+              {/* Decorative Grid Background */}
+              <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(#10b981 1px, transparent 1px)', backgroundSize: '16px 16px' }}></div>
+
+              {/* Pulsing Pin Marker */}
+              <div className="relative z-10 flex flex-col items-center transform group-hover:scale-110 transition-transform duration-500">
+                <div className="relative flex h-12 w-12 items-center justify-center">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-40"></span>
+                  <div className="relative flex items-center justify-center h-10 w-10 rounded-full bg-emerald-600 text-white shadow-lg">
+                    <MapPin size={20} />
+                  </div>
+                </div>
+                <div className="w-4 h-1 bg-black/20 rounded-[100%] mt-2 blur-[1px]"></div>
+              </div>
+            </div>
+            <div className="p-6">
+              <Typography variant="body" className="font-bold mb-1">Bank Sampah Induk Jakarta Pusat</Typography>
+              <Typography variant="caption" className="text-slate-500 mb-4">Jl. Rawasari Selatan No.1, Cempaka Putih</Typography>
+              <Link to="/maps">
+                <Button variant="secondary" className="w-full">Lihat Rute</Button>
+              </Link>
+            </div>
           </Card>
         </section>
       </div>
