@@ -18,10 +18,10 @@ const transportCosts = {
 };
 
 // Mapping warna status badge
-const statusColors = {
-  pending: 'text-yellow-700 bg-yellow-50 border-yellow-200',
-  success: 'text-green-700 bg-green-50 border-green-200',
-  failed: 'text-red-700 bg-red-50 border-red-200',
+const statusColors: Record<string, string> = {
+  pending: 'text-amber-700 bg-amber-50 border-amber-200',
+  completed: 'text-emerald-700 bg-emerald-50 border-emerald-200',
+  cancelled: 'text-rose-700 bg-rose-50 border-rose-200',
 };
 
 export const OrderDetailPage = () => {

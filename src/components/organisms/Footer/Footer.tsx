@@ -2,7 +2,7 @@ import { Typography } from '../../atoms/Typography/Typography';
 
 export const Footer = () => {
   // Fungsi logis untuk mengarahkan layar langsung ke posisi paling atas dokumen
-  const scrollToTop = (e) => {
+  const scrollToTop = (e: React.MouseEvent) => {
     e.preventDefault(); // Mencegah manipulasi URL hash bawaan tag anchor
     window.scrollTo({
       top: 0,

@@ -15,7 +15,7 @@ export const Navbar = () => {
   ];
 
   // Fungsi logis untuk menangani scroll ke posisi paling atas halaman
-  const scrollToTop = (e) => {
+  const scrollToTop = (e: React.MouseEvent) => {
     e.preventDefault(); // Mencegah reload halaman atau manipulasi URL hash bawaan tag <a>
     window.scrollTo({
       top: 0,

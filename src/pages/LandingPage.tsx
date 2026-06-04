@@ -3,6 +3,7 @@
 import {
   BadgeCheck,
   CalendarDays,
+  ChevronRight,
   CircleDollarSign,
   FlaskConical,
   Leaf,
@@ -124,24 +125,35 @@ export const LandingPage = () => {
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-white font-sans text-slate-900">
       {/* Background decoration */}
-      <div className="pointer-events-none fixed inset-0 -z-10">
-        <div className="absolute left-1/2 top-20 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-violet-100/40 blur-3xl" />
-        <div className="absolute right-0 top-64 h-[420px] w-[420px] rounded-full bg-emerald-100/60 blur-3xl" />
-        <div className="absolute bottom-0 left-0 h-[380px] w-[380px] rounded-full bg-cyan-50 blur-3xl" />
+      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+        {/* Dot Pattern */}
+        <div className="absolute inset-0 opacity-[0.15]" 
+             style={{ backgroundImage: 'radial-gradient(#10b981 0.5px, transparent 0.5px)', backgroundSize: '24px 24px' }}>
+        </div>
+        
+        {/* Blur Blobs */}
+        <div className="absolute -left-20 top-0 h-[600px] w-[600px] rounded-full bg-emerald-100/40 blur-[120px] animate-pulse" />
+        <div className="absolute -right-20 top-20 h-[500px] w-[500px] rounded-full bg-violet-100/40 blur-[120px]" />
+        <div className="absolute left-1/2 top-1/2 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-50/30 blur-[140px]" />
+        <div className="absolute bottom-0 right-1/4 h-[400px] w-[400px] rounded-full bg-amber-50/40 blur-[100px]" />
       </div>
 
       {/* Navbar */}
-      <header className="fixed left-1/2 top-4 z-50 flex w-[94%] max-w-7xl -translate-x-1/2 items-center justify-between rounded-3xl border border-slate-100 bg-white/80 px-6 py-4 shadow-[0_18px_60px_rgba(15,23,42,0.08)] backdrop-blur-md transition-all duration-300">
+      <header className="fixed left-1/2 top-6 z-50 flex w-[94%] max-w-7xl -translate-x-1/2 items-center justify-between rounded-[2rem] border border-white/40 bg-white/70 px-8 py-4 shadow-[0_20px_70px_rgba(15,23,42,0.12)] backdrop-blur-xl transition-all duration-500">
         <Link 
           to="/" 
-          className="flex items-center gap-3"
+          className="flex items-center gap-2 group"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-600">
-            <Recycle size={27} strokeWidth={2.8} />
+          <div className="h-12 w-12 rounded-2xl overflow-hidden shadow-lg shadow-emerald-800/40 flex-shrink-0 transition-transform group-hover:scale-105">
+            <img
+              src="/src/assets/Logo.jpeg"
+              alt="Relecta Logo"
+              className="h-full w-full object-cover"
+            />
           </div>
-          <span className="text-2xl font-extrabold tracking-tight text-emerald-600">
-            Relecta
+          <span className="text-2xl font-black tracking-tighter text-slate-900">
+            Relecta<span className="text-emerald-500">.</span>
           </span>
         </Link>
 
@@ -182,157 +194,100 @@ export const LandingPage = () => {
       </header>
 
       {/* Hero */}
-      <section className="mx-auto grid w-[90%] max-w-7xl items-center gap-14 pb-20 pt-32 lg:grid-cols-2 lg:pt-36">
-        <div>
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-700">
-            <Leaf size={18} />
-            Solusi e-waste resmi dan ramah lingkungan
+      <section className="mx-auto grid w-[90%] max-w-7xl items-center gap-14 pb-20 pt-40 lg:grid-cols-2 lg:pt-48">
+        <div className="relative">
+          {/* Floating decorative icons */}
+          <div className="absolute -left-12 top-0 -z-10 animate-bounce hidden xl:block opacity-40">
+            <div className="p-3 rounded-2xl bg-emerald-50 text-emerald-500 border border-emerald-100 shadow-sm">
+              <Leaf size={24} />
+            </div>
+          </div>
+          <div className="absolute -right-8 bottom-20 -z-10 animate-pulse hidden xl:block opacity-40">
+            <div className="p-3 rounded-2xl bg-violet-50 text-violet-500 border border-violet-100 shadow-sm">
+              <Recycle size={24} />
+            </div>
           </div>
 
-          <h1 className="max-w-3xl text-5xl font-black leading-tight tracking-tight text-slate-950 md:text-6xl">
-            Buang Sampah Elektronik Tanpa Ribet
+          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50/50 backdrop-blur-sm px-5 py-2 text-xs font-black uppercase tracking-widest text-emerald-700">
+            <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
+            Solusi e-waste resmi & ramah lingkungan
+          </div>
+
+          <h1 className="max-w-3xl text-6xl font-black leading-[1.1] tracking-tighter text-slate-950 md:text-7xl">
+            Buang Sampah <br />
+            <span className="bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 bg-clip-text text-transparent">Elektronik</span> <br />
+            Tanpa Ribet
           </h1>
 
-          <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-emerald-600 md:text-4xl">
-            Semudah Menjadwalkan Kurir
-          </h2>
-
-          <div className="mt-3 h-1.5 w-56 rounded-full bg-emerald-500" />
-
-          <p className="mt-7 max-w-xl text-lg leading-8 text-slate-600">
+          <p className="mt-8 max-w-xl text-lg font-medium leading-relaxed text-slate-500">
             Relecta menghubungkan Anda dengan layanan pengelolaan limbah
-            elektronik resmi. Praktis, aman, dan berkontribusi langsung menjaga
-            lingkungan.
+            elektronik resmi. <span className="text-slate-900 font-bold">Praktis, aman, dan berkontribusi langsung</span> menjaga
+            kelestarian lingkungan kita bersama.
           </p>
 
-          <div className="mt-9 flex flex-col gap-4 sm:flex-row">
+          <div className="mt-10 flex flex-col gap-5 sm:flex-row">
             <Link
               to="/register"
-              className="inline-flex items-center justify-center gap-3 rounded-full bg-emerald-600 px-8 py-4 font-bold text-white shadow-xl shadow-emerald-500/25 transition hover:-translate-y-0.5 hover:bg-emerald-700"
+              className="group relative inline-flex items-center justify-center gap-3 rounded-full bg-emerald-600 px-10 py-5 font-black text-white shadow-2xl shadow-emerald-600/40 transition-all hover:-translate-y-1 hover:bg-emerald-700 hover:shadow-emerald-600/60"
             >
               <CalendarDays size={20} />
               Jadwalkan Sekarang
+              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
             </Link>
 
-            <button className="inline-flex items-center justify-center gap-3 rounded-full border border-emerald-500 bg-white px-8 py-4 font-bold text-emerald-600 transition hover:-translate-y-0.5 hover:bg-emerald-50">
-              <PlayCircle size={21} />
+            <button className="group inline-flex items-center justify-center gap-3 rounded-full border-2 border-slate-200 bg-white px-10 py-5 font-black text-slate-900 transition-all hover:-translate-y-1 hover:border-emerald-500 hover:text-emerald-600 hover:shadow-xl hover:shadow-emerald-500/10">
+              <PlayCircle size={22} className="group-hover:text-emerald-500" />
               Lihat Cara Kerja
             </button>
           </div>
 
-          <div className="mt-9 grid gap-4 text-sm font-semibold text-slate-600 sm:grid-cols-3">
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="text-emerald-500" size={22} />
-              Aman & Terpercaya
+          <div className="mt-12 flex flex-wrap gap-8">
+            <div className="flex items-center gap-3 group">
+              <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-emerald-100 text-emerald-600 transition-transform group-hover:scale-110">
+                <ShieldCheck size={22} />
+              </div>
+              <span className="text-sm font-bold text-slate-700">Aman & Terpercaya</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Leaf className="text-emerald-500" size={22} />
-              Ramah Lingkungan
+            <div className="flex items-center gap-3 group">
+              <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-emerald-100 text-emerald-600 transition-transform group-hover:scale-110">
+                <Leaf size={22} />
+              </div>
+              <span className="text-sm font-bold text-slate-700">100% Eco-Friendly</span>
             </div>
-            <div className="flex items-center gap-2">
-              <BadgeCheck className="text-amber-500" size={22} />
-              Terdaftar Resmi
+            <div className="flex items-center gap-3 group">
+              <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-amber-100 text-amber-600 transition-transform group-hover:scale-110">
+                <BadgeCheck size={22} />
+              </div>
+              <span className="text-sm font-bold text-slate-700">Terdaftar Resmi</span>
             </div>
           </div>
         </div>
 
         {/* Hero Illustration */}
-        <div className="relative mx-auto hidden min-h-[520px] w-full max-w-xl lg:block">
-          <div className="absolute right-0 top-10 h-[430px] w-[430px] rounded-full bg-emerald-100/70" />
-          <div className="absolute left-8 top-20 h-[360px] w-[360px] rounded-full bg-violet-100/60" />
-
-          <div className="absolute right-2 top-20 rounded-3xl bg-white px-5 py-4 shadow-xl shadow-slate-200">
-            <div className="flex items-center gap-3">
-              <Leaf className="text-emerald-600" size={25} />
-              <div>
-                <p className="text-sm font-extrabold text-emerald-600">
-                  Untuk bumi
-                </p>
-                <p className="text-xs font-semibold text-emerald-500">
-                  yang lebih baik
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Courier */}
-          <div className="absolute right-10 top-36 z-20">
-            <div className="relative">
-              <div className="mx-auto h-20 w-20 rounded-full bg-amber-100 shadow-md">
-                <div className="absolute left-6 top-7 h-2 w-2 rounded-full bg-slate-800" />
-                <div className="absolute right-6 top-7 h-2 w-2 rounded-full bg-slate-800" />
-                <div className="absolute left-8 top-11 h-2 w-5 rounded-full border-b-2 border-slate-700" />
-              </div>
-
-              <div className="absolute -top-4 left-2 h-9 w-20 rounded-t-full bg-emerald-600">
-                <Recycle
-                  size={18}
-                  className="absolute left-8 top-2 text-white"
-                />
-              </div>
-
-              <div className="mx-auto mt-2 flex h-48 w-32 flex-col items-center rounded-t-[42px] bg-emerald-600 pt-7 shadow-xl">
-                <Recycle size={26} className="text-white" />
-                <div className="mt-5 h-20 w-20 rounded-2xl bg-slate-800" />
-              </div>
-            </div>
-          </div>
-
-          {/* Collection box */}
-          <div className="absolute bottom-20 left-4 z-10 h-52 w-80 rounded-3xl bg-emerald-600 shadow-2xl shadow-emerald-900/20">
-            <div className="absolute -top-16 left-4 h-20 w-[280px] rotate-[-3deg] rounded-2xl bg-amber-200 shadow-lg" />
-            <Recycle
-              size={82}
-              className="absolute left-1/2 top-16 -translate-x-1/2 text-white/80"
-            />
-            <p className="absolute bottom-8 left-1/2 -translate-x-1/2 text-xl font-extrabold text-white">
-              Relecta
-            </p>
-          </div>
-
-          {/* Electronics */}
-          <div className="absolute bottom-72 left-24 z-20 h-32 w-44 rounded-xl bg-slate-800 p-3 shadow-2xl">
-            <div className="h-full rounded-lg bg-slate-950" />
-            <div className="absolute -bottom-4 left-1/2 h-4 w-32 -translate-x-1/2 rounded-b-lg bg-slate-300" />
-          </div>
-
-          <div className="absolute bottom-72 left-64 z-30 h-36 w-20 rotate-[-8deg] rounded-2xl bg-slate-900 p-2 shadow-xl">
-            <div className="h-full rounded-xl bg-slate-800" />
-          </div>
-
-          <div className="absolute bottom-60 left-80 z-20 h-28 w-28 rounded-2xl bg-slate-100 shadow-xl">
-            <div className="mx-auto mt-5 h-12 w-16 rounded-lg bg-slate-300" />
-            <div className="mx-auto mt-3 h-3 w-16 rounded-full bg-emerald-300" />
-          </div>
-
-          <div className="absolute bottom-28 left-0 z-20 h-28 w-32 rounded-2xl bg-slate-900 p-4 shadow-xl">
-            <div className="text-lg font-bold text-white">+</div>
-            <div className="absolute bottom-4 right-4 text-lg font-bold text-white">
-              -
-            </div>
-          </div>
-
-          <div className="absolute bottom-8 left-64 z-30 h-7 w-36 rounded-full border-[10px] border-slate-800" />
-
-          <div className="absolute bottom-20 right-0 z-10 h-40 w-40 rounded-3xl bg-emerald-700 shadow-2xl">
-            <Recycle
-              size={54}
-              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white/80"
-            />
-          </div>
+        <div className="relative mx-auto hidden w-full max-w-xl lg:flex items-center justify-center">
+          <img
+            src="/src/assets/Banner.png"
+            alt="Relecta – Pilah Sampah Elektronik"
+            className="w-full h-auto object-contain select-none scale-110"
+            style={{ mixBlendMode: 'multiply' }}
+            draggable={false}
+          />
         </div>
       </section>
 
       {/* Stats */}
-      <section className="mx-auto -mt-8 grid w-[90%] max-w-6xl gap-6 md:grid-cols-3">
+      <section className="relative mx-auto -mt-12 grid w-[90%] max-w-6xl gap-8 md:grid-cols-3 z-10">
         {stats.map((item) => (
           <div
             key={item.label}
-            className="rounded-3xl border border-slate-100 bg-white p-7 shadow-[0_20px_60px_rgba(15,23,42,0.10)]"
+            className="group relative overflow-hidden rounded-[2.5rem] border border-white/40 bg-white/60 p-8 shadow-[0_25px_80px_rgba(15,23,42,0.12)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-emerald-500/10"
           >
-            <div className="flex items-center gap-5">
+            {/* Hover decorative element */}
+            <div className={`absolute -right-4 -top-4 h-24 w-24 rounded-full opacity-0 transition-opacity duration-500 group-hover:opacity-10 ${getStatStyle(item.color)}`} />
+            
+            <div className="flex flex-col items-center gap-6 text-center">
               <div
-                className={`flex h-16 w-16 items-center justify-center rounded-2xl ${getStatStyle(
+                className={`flex h-20 w-20 items-center justify-center rounded-3xl shadow-lg transition-transform duration-500 group-hover:rotate-[10deg] ${getStatStyle(
                   item.color
                 )}`}
               >
@@ -340,7 +295,7 @@ export const LandingPage = () => {
               </div>
               <div>
                 <p
-                  className={`text-3xl font-black ${
+                  className={`text-4xl font-black tracking-tighter ${
                     item.color === "green"
                       ? "text-emerald-600"
                       : item.color === "purple"
@@ -350,7 +305,7 @@ export const LandingPage = () => {
                 >
                   {item.value}
                 </p>
-                <p className="mt-1 text-sm font-medium text-slate-500">
+                <p className="mt-2 text-sm font-bold uppercase tracking-widest text-slate-400">
                   {item.label}
                 </p>
               </div>
@@ -362,40 +317,52 @@ export const LandingPage = () => {
       {/* Problem Section */}
       <section
         id="problem"
-        className="mt-20 bg-gradient-to-b from-emerald-50/70 to-white py-24"
+        className="relative mt-32 py-32 overflow-hidden"
       >
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-slate-50 to-white" />
+        
+        {/* Floating elements */}
+        <div className="absolute left-10 top-20 text-emerald-100 animate-bounce delay-700 hidden lg:block opacity-50">
+          <Recycle size={60} />
+        </div>
+        <div className="absolute right-20 bottom-20 text-violet-100 animate-pulse hidden lg:block opacity-50">
+          <FlaskConical size={80} />
+        </div>
+
         <div className="mx-auto w-[90%] max-w-7xl">
-          <div className="mb-10">
-            <p className="mb-3 text-sm font-bold uppercase tracking-[0.2em] text-emerald-600">
+          <div className="mb-20 flex flex-col items-center text-center">
+            <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-emerald-600">
               Tantangan e-waste
             </p>
-            <h2 className="text-4xl font-black tracking-tight text-slate-950">
-              Masalah yang Kami Hadapi
+            <h2 className="text-5xl font-black tracking-tight text-slate-950">
+              Masalah yang <span className="bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">Kami Hadapi</span>
             </h2>
-            <div className="mt-4 h-1.5 w-20 rounded-full bg-emerald-500" />
+            <div className="mt-6 h-1.5 w-24 rounded-full bg-emerald-500" />
           </div>
 
-          <div className="grid gap-7 md:grid-cols-3">
+          <div className="grid gap-10 md:grid-cols-3">
             {problems.map((item) => (
               <div
                 key={item.title}
-                className="rounded-[2rem] border border-slate-100 bg-white p-8 shadow-[0_18px_50px_rgba(15,23,42,0.08)] transition hover:-translate-y-1 hover:shadow-[0_24px_70px_rgba(15,23,42,0.12)]"
+                className="group relative rounded-[3rem] border border-white bg-white/50 p-10 shadow-[0_20px_60px_rgba(15,23,42,0.06)] backdrop-blur-sm transition-all duration-500 hover:-translate-y-3 hover:shadow-[0_40px_100px_rgba(15,23,42,0.12)]"
               >
                 <div
-                  className={`mb-7 flex h-20 w-20 items-center justify-center rounded-[1.7rem] ${getProblemStyle(
+                  className={`mb-10 flex h-24 w-24 items-center justify-center rounded-[2.5rem] shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 ${getProblemStyle(
                     item.color
                   )}`}
                 >
                   {item.icon}
                 </div>
 
-                <h3 className="text-xl font-extrabold text-slate-900">
+                <h3 className="text-2xl font-black text-slate-900 leading-tight">
                   {item.title}
                 </h3>
 
-                <p className="mt-4 leading-7 text-slate-600">
+                <p className="mt-6 text-lg leading-relaxed text-slate-500 font-medium">
                   {item.description}
                 </p>
+                
+                <div className={`mt-8 flex h-1 w-12 rounded-full transition-all duration-500 group-hover:w-24 ${getProblemStyle(item.color)}`} />
               </div>
             ))}
           </div>
@@ -403,39 +370,52 @@ export const LandingPage = () => {
       </section>
 
       {/* Features Section */}
-      <section id="fitur" className="mt-20 py-24">
-        <div className="mx-auto w-[90%] max-w-7xl">
-          <div className="mb-10 flex flex-col items-center text-center">
-            <p className="mb-3 text-sm font-bold uppercase tracking-[0.2em] text-violet-600">
+      <section id="fitur" className="relative mt-20 py-32 overflow-hidden bg-white">
+        {/* Decorative background blur */}
+        <div className="absolute -right-40 top-1/2 h-96 w-96 rounded-full bg-violet-100/30 blur-[100px]" />
+        <div className="absolute -left-20 bottom-20 text-amber-100 animate-bounce hidden lg:block opacity-50">
+          <Star size={40} />
+        </div>
+        <div className="absolute right-10 top-20 text-emerald-100 animate-pulse hidden lg:block opacity-50">
+          <Leaf size={50} />
+        </div>
+
+        <div className="mx-auto w-[90%] max-w-7xl relative">
+          <div className="mb-20 flex flex-col items-center text-center">
+            <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-violet-600">
               Fitur Unggulan
             </p>
-            <h2 className="text-4xl font-black tracking-tight text-slate-950">
-              Kemudahan dalam Setiap Langkah
+            <h2 className="text-5xl font-black tracking-tight text-slate-950">
+              Kemudahan dalam <span className="bg-gradient-to-r from-violet-600 to-fuchsia-500 bg-clip-text text-transparent">Setiap Langkah</span>
             </h2>
-            <div className="mt-4 h-1.5 w-20 rounded-full bg-violet-500" />
+            <div className="mt-6 h-1.5 w-24 rounded-full bg-violet-500" />
           </div>
 
-          <div className="grid gap-7 md:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-3">
             {features.map((item) => (
               <div
                 key={item.title}
-                className="rounded-[2rem] border border-slate-100 bg-white p-8 shadow-[0_18px_50px_rgba(15,23,42,0.08)] transition hover:-translate-y-1 hover:shadow-[0_24px_70px_rgba(15,23,42,0.12)]"
+                className="group relative overflow-hidden rounded-[3rem] border border-slate-100 bg-white p-10 shadow-[0_20px_60px_rgba(15,23,42,0.06)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_40px_100px_rgba(15,23,42,0.1)] hover:border-violet-200"
               >
                 <div
-                  className={`mb-7 flex h-20 w-20 items-center justify-center rounded-[1.7rem] ${getProblemStyle(
+                  className={`mb-10 flex h-20 w-20 items-center justify-center rounded-[2rem] transition-all duration-500 group-hover:scale-110 group-hover:rotate-[-6deg] ${getProblemStyle(
                     item.color
                   )}`}
                 >
-                  {item.icon}
+                  <div className="text-violet-600">{item.icon}</div>
                 </div>
 
-                <h3 className="text-xl font-extrabold text-slate-900">
+                <h3 className="text-2xl font-black text-slate-900 leading-tight transition-colors group-hover:text-violet-600">
                   {item.title}
                 </h3>
 
-                <p className="mt-4 leading-7 text-slate-600">
+                <p className="mt-6 text-lg leading-relaxed text-slate-500 font-medium">
                   {item.description}
                 </p>
+
+                <div className="mt-8 flex items-center gap-2 text-sm font-bold text-violet-600 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-2">
+                  Pelajari Selengkapnya <ChevronRight size={16} />
+                </div>
               </div>
             ))}
           </div>
@@ -443,53 +423,66 @@ export const LandingPage = () => {
       </section>
 
       {/* How It Works */}
-      <section id="cara-kerja" className="py-24">
+      <section id="cara-kerja" className="relative py-32 bg-slate-50/50">
         <div className="mx-auto w-[90%] max-w-7xl">
-          <div className="mx-auto mb-14 max-w-2xl text-center">
-            <p className="mb-3 text-sm font-bold uppercase tracking-[0.2em] text-emerald-600">
-              Cara Kerja
+          <div className="mx-auto mb-20 max-w-3xl text-center">
+            <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-emerald-600">
+              Alur Pengguna
             </p>
-            <h2 className="text-4xl font-black tracking-tight text-slate-950">
-              Jadwalkan pickup hanya dalam beberapa langkah
+            <h2 className="text-5xl font-black tracking-tight text-slate-950">
+              Jadwalkan pickup hanya <br /> <span className="text-emerald-600">dalam 4 langkah</span>
             </h2>
-            <p className="mt-5 text-lg leading-8 text-slate-600">
+            <p className="mt-8 text-xl leading-relaxed text-slate-500 font-medium">
               Relecta membantu proses pengumpulan limbah elektronik menjadi
-              sederhana, aman, dan dapat dilacak.
+              sederhana, aman, dan dapat dilacak sepenuhnya.
             </p>
           </div>
 
-          <div className="grid gap-7 md:grid-cols-4">
+          <div className="grid gap-8 md:grid-cols-4 relative">
+            {/* Connection line for desktop */}
+            <div className="absolute top-28 left-0 right-0 h-1 bg-gradient-to-r from-emerald-100 via-emerald-200 to-emerald-100 hidden lg:block -z-10" />
+
             {[
               {
                 title: "Pemilihan Perangkat",
-                desc: "Pengguna mengidentifikasi dan memilih jenis perangkat elektronik yang akan dibuang.",
+                desc: "Identifikasi & pilih jenis perangkat elektronik yang akan didaur ulang.",
+                icon: <Recycle size={24} />
               },
               {
                 title: "Penentuan Lokasi",
-                desc: "Pengguna memasukkan alamat atau titik koordinat penjemputan barang.",
+                desc: "Masukkan alamat lengkap atau tandai titik koordinat penjemputan.",
+                icon: <MapPin size={24} />
               },
               {
                 title: "Proses Penjemputan",
-                desc: "Kurir mitra mengambil barang langsung dari lokasi yang telah ditentukan.",
+                desc: "Kurir mitra menjemput barang sesuai jadwal yang Anda tentukan.",
+                icon: <Truck size={24} />
               },
               {
                 title: "Pengelolaan Resmi",
-                desc: "Limbah dibawa ke fasilitas resmi untuk didaur ulang atau dihancurkan secara aman.",
+                desc: "Barang dikelola di fasilitas resmi untuk daur ulang yang aman.",
+                icon: <ShieldCheck size={24} />
               },
             ].map((step, index) => (
               <div
                 key={step.title}
-                className="relative rounded-3xl border border-slate-100 bg-white p-7 shadow-lg shadow-slate-200/60"
+                className="group relative rounded-[2.5rem] border border-white bg-white p-8 shadow-[0_20px_60px_rgba(15,23,42,0.06)] transition-all duration-500 hover:shadow-[0_30px_80px_rgba(15,23,42,0.12)]"
               >
-                <div className="mb-7 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-600 text-xl font-black text-white">
+                <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-600 text-2xl font-black text-white shadow-lg shadow-emerald-600/30 transition-all duration-500 group-hover:scale-110 group-hover:-rotate-3">
                   {index + 1}
                 </div>
-                <h3 className="text-lg font-extrabold text-slate-900">
+                
+                <h3 className="text-xl font-black text-slate-900 leading-tight">
                   {step.title}
                 </h3>
-                <p className="mt-3 leading-7 text-slate-600">
+                <p className="mt-4 text-base leading-relaxed text-slate-500 font-medium">
                   {step.desc}
                 </p>
+                
+                <div className="mt-8 flex items-center gap-3 text-emerald-600/30 transition-colors group-hover:text-emerald-500">
+                  {step.icon}
+                  <div className="h-0.5 w-full bg-current rounded-full" />
+                </div>
               </div>
             ))}
           </div>
@@ -497,44 +490,52 @@ export const LandingPage = () => {
       </section>
 
       {/* CTA */}
-      <section className="relative mx-auto mb-20 w-[90%] max-w-7xl">
-        {/* Ambient Glow */}
-        <div className="absolute -inset-1 rounded-[3rem] bg-gradient-to-r from-emerald-500 to-violet-500 opacity-20 blur-2xl"></div>
+      <section className="relative mx-auto mb-32 w-[90%] max-w-7xl">
+        {/* Extreme Glow */}
+        <div className="absolute -inset-4 rounded-[4rem] bg-gradient-to-r from-emerald-500 via-teal-500 to-violet-600 opacity-20 blur-3xl"></div>
         
-        <div className="relative overflow-hidden rounded-[2.5rem] border border-slate-800 bg-gradient-to-br from-slate-900 to-slate-950 p-10 text-white shadow-2xl md:p-14">
+        <div className="relative overflow-hidden rounded-[3rem] border-4 border-white bg-slate-950 p-12 text-white shadow-[0_40px_100px_rgba(0,0,0,0.3)] md:p-20">
           
-          {/* Subtle Background Elements */}
-          <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-emerald-500/20 blur-3xl"></div>
-          <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-violet-500/20 blur-3xl"></div>
+          {/* Animated Background Gradients */}
+          <div className="absolute -right-40 -top-40 h-[400px] w-[400px] rounded-full bg-emerald-500/30 blur-[120px] animate-pulse"></div>
+          <div className="absolute -bottom-40 -left-40 h-[400px] w-[400px] rounded-full bg-violet-500/30 blur-[120px]"></div>
+          
+          <div className="absolute inset-0 opacity-[0.03]" 
+               style={{ backgroundImage: 'radial-gradient(white 1px, transparent 1px)', backgroundSize: '32px 32px' }}>
+          </div>
 
-          <div className="relative z-10 grid items-center gap-10 md:grid-cols-[1.4fr_0.6fr]">
+          <div className="relative z-10 grid items-center gap-16 lg:grid-cols-[1.2fr_0.8fr]">
             <div>
-              <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-sm font-bold text-emerald-300 backdrop-blur-md">
-                <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400"></span>
-                Mulai dari rumah Anda
-              </p>
-              <h2 className="bg-gradient-to-r from-white to-slate-300 bg-clip-text text-4xl font-black tracking-tight text-transparent md:text-5xl">
-                Punya perangkat elektronik tidak terpakai?
+              <div className="mb-8 inline-flex items-center gap-2 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-6 py-3 text-sm font-black uppercase tracking-[0.2em] text-emerald-400 backdrop-blur-md">
+                <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_10px_#10b981]"></span>
+                Ready to make an impact?
+              </div>
+              <h2 className="text-5xl font-black text-white leading-[1.1] tracking-tighter md:text-7xl">
+                Punya perangkat <br />
+                <span className="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">tidak terpakai?</span>
               </h2>
-              <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-400">
-                Jadwalkan penjemputan sekarang dan bantu kurangi limbah
-                elektronik berbahaya dengan cara yang aman dan resmi.
+              <p className="mt-10 max-w-2xl text-xl leading-relaxed text-slate-400 font-medium">
+                Jangan biarkan limbah elektronik Anda merusak masa depan. 
+                <span className="text-white"> Jadwalkan penjemputan sekarang</span> dan jadilah bagian dari revolusi hijau.
               </p>
             </div>
 
-            <div className="flex md:justify-end">
+            <div className="flex flex-col gap-6 lg:items-end">
               <Link
                 to="/register"
-                className="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-emerald-500 px-9 py-4 font-extrabold text-white shadow-xl shadow-emerald-500/25 transition-all duration-300 hover:scale-105 hover:bg-emerald-600 hover:shadow-emerald-500/40"
+                className="group relative flex w-full items-center justify-center overflow-hidden rounded-[2rem] bg-emerald-500 px-12 py-7 text-xl font-black text-white shadow-[0_20px_50px_rgba(16,185,129,0.4)] transition-all duration-500 hover:scale-[1.02] hover:bg-emerald-400 hover:shadow-[0_30px_70px_rgba(16,185,129,0.5)] lg:w-auto"
               >
-                <span className="relative z-10 flex items-center gap-2">
-                  Jadwalkan Pickup
-                  <svg className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
+                <span className="relative z-10 flex items-center gap-3">
+                  Jadwalkan Pickup Gratis
+                  <ChevronRight size={24} className="transition-transform duration-300 group-hover:translate-x-2" />
                 </span>
-                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full"></div>
+                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 group-hover:translate-x-full"></div>
               </Link>
+              
+              <div className="flex items-center gap-4 text-slate-500 font-bold px-4">
+                <ShieldCheck size={20} className="text-emerald-500" />
+                <span>Terverifikasi & Aman</span>
+              </div>
             </div>
           </div>
         </div>
@@ -551,8 +552,12 @@ export const LandingPage = () => {
                 className="flex items-center gap-3"
                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600">
-                  <Recycle size={24} strokeWidth={2.5} />
+              <div className="h-10 w-10 rounded-xl overflow-hidden flex-shrink-0">
+                  <img
+                    src="/src/assets/Logo.jpeg"
+                    alt="Relecta Logo"
+                    className="h-full w-full object-cover"
+                  />
                 </div>
                 <span className="text-2xl font-extrabold tracking-tight text-emerald-600">
                   Relecta

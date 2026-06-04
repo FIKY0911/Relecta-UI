@@ -8,18 +8,18 @@ import { Link } from 'react-router-dom';
 import { Button } from '../components/atoms/Button/Button';
 
 // Mapping ongkos transportasi sesuai dengan spesifikasi di OrderPage
-const transportCosts = {
-  'Motor': 10000,
-  'Mobil Pickup': 25000,
-  'Truk': 40000,
-  'Gerobak': 7000,
+const transportCosts: Record<string, number> = {
+  'Motor': 0,
+  'Mobil Pickup': 0,
+  'Truk': 0,
+  'Gerobak': 0,
 };
 
 // Mapping style status untuk mempermudah maintenance & readability
-const statusStyles = {
+const statusStyles: Record<string, string> = {
   pending: 'bg-amber-100 text-amber-700 border-amber-200',
-  success: 'bg-emerald-100 text-emerald-700 border-emerald-200',
-  failed: 'bg-rose-100 text-rose-700 border-rose-200',
+  completed: 'bg-emerald-100 text-emerald-700 border-emerald-200',
+  cancelled: 'bg-rose-100 text-rose-700 border-rose-200',
 };
 
 export const OrderHistoryPage = () => {
