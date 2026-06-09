@@ -5,14 +5,54 @@ import { Button } from '../components/atoms/Button/Button';
 import { useAuthStore } from '../stores/authStore';
 import { useOrderStore } from '../stores/orderStore';
 import { useAddressStore } from '../stores/addressStore';
+import { bankLocations } from '../data/bankLocations';
 import { Link } from 'react-router-dom';
 import { Plus, Package, MapPin, ArrowRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 export const DashboardPage = () => {
   const currentUser = useAuthStore((state) => state.currentUser);
   const orders = useOrderStore((state) => state.orders).filter(o => o.userId === currentUser?.id);
   const allAddresses = useAddressStore((state) => state.addresses);
   const addresses = allAddresses.filter((address) => address.userId === currentUser?.id);
+  
+  const [userLocation, setUserLocation] = useState<{lat: number, lng: number} | null>(null);
+  const [nearestLocation, setNearestLocation] = useState(bankLocations[0]);
+
+  // Calculate distance between two points in km
+  const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  };
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
+        setUserLocation({ lat: latitude, lng: longitude });
+
+        let minDistance = Infinity;
+        let nearest = bankLocations[0];
+
+        bankLocations.forEach(loc => {
+          const dist = calculateDistance(latitude, longitude, loc.lat, loc.lng);
+          if (dist < minDistance) {
+            minDistance = dist;
+            nearest = loc;
+          }
+        });
+
+        setNearestLocation(nearest);
+      });
+    }
+  }, []);
 
   const stats = [
     { label: 'Total Pesanan', value: orders.length, icon: Package, color: 'text-emerald-600 bg-emerald-600/10' },
@@ -112,8 +152,8 @@ export const DashboardPage = () => {
               </div>
             </div>
             <div className="p-6">
-              <Typography variant="body" className="font-bold mb-1">Bank Sampah Induk Jakarta Pusat</Typography>
-              <Typography variant="caption" className="text-slate-500 mb-4">Jl. Rawasari Selatan No.1, Cempaka Putih</Typography>
+              <Typography variant="body" className="font-bold mb-1">{nearestLocation.name}</Typography>
+              <Typography variant="caption" className="text-slate-500 mb-4">{nearestLocation.address}</Typography>
               <Link to="/maps">
                 <Button variant="secondary" className="w-full">Lihat Rute</Button>
               </Link>

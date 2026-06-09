@@ -7,7 +7,7 @@ import { Button } from '../components/atoms/Button/Button';
 import { useOrderStore } from '../stores/orderStore';
 import { useAuthStore } from '../stores/authStore';
 import { useAddressStore } from '../stores/addressStore';
-import { Package, Calendar, MapPin, CheckCircle2, Truck, AlertTriangle } from 'lucide-react';
+import { Package, Calendar, MapPin, CheckCircle2, Truck, AlertTriangle, Wallet, QrCode } from 'lucide-react';
 
 // Mapping ongkos transportasi sesuai spesifikasi industri di OrderPage
 const transportCosts = {
@@ -167,6 +167,17 @@ export const OrderDetailPage = () => {
                 </span>
                 <span className="font-bold text-ink-deep">{order.damageSeverity}</span>
               </div>
+              {order.paymentMethod && (
+                <div className="flex items-center justify-between text-slate-600 text-sm border-t border-dashed border-slate-200 pt-3">
+                  <span className="flex items-center gap-1.5">
+                    {order.paymentMethod === 'qris' ? <QrCode size={14} className="text-slate-400" /> : <Wallet size={14} className="text-slate-400" />}
+                    Metode Pembayaran
+                  </span>
+                  <span className="font-bold text-ink-deep uppercase text-xs bg-slate-100 px-2.5 py-0.5 rounded-full">
+                    {order.paymentMethod}
+                  </span>
+                </div>
+              )}
               <div className="flex items-center justify-between text-sm font-bold pt-4 border-t-2 border-slate-200">
                 <span className="text-base text-ink-deep">Total Bayar</span>
                 <span className="text-xl font-bold text-cobalt">Rp{grandTotal.toLocaleString('id-ID')}</span>

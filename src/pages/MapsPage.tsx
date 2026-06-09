@@ -21,7 +21,36 @@ export const MapsPage = () => {
   const [userLocation, setUserLocation] = useState<{lng: number, lat: number} | null>(null);
   const [isRouting, setIsRouting] = useState(false);
 
-  const filteredLocations = bankLocations.filter(loc => 
+  // Calculate distance between two points in km
+  const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+    const R = 6371; // Radius of the earth in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const d = R * c;
+    return d;
+  };
+
+  const sortedLocations = [...bankLocations].map(loc => {
+    if (userLocation) {
+      return {
+        ...loc,
+        distance: calculateDistance(userLocation.lat, userLocation.lng, loc.lat, loc.lng)
+      };
+    }
+    return { ...loc, distance: null };
+  }).sort((a, b) => {
+    if (a.distance !== null && b.distance !== null) {
+      return a.distance - b.distance;
+    }
+    return 0;
+  });
+
+  const filteredLocations = sortedLocations.filter(loc => 
     loc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     loc.address.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -110,8 +139,22 @@ export const MapsPage = () => {
     }
   };
 
+  // Get user location on mount for real-time distance
+  useState(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { longitude, latitude } = position.coords;
+          setUserLocation({ lng: longitude, lat: latitude });
+        },
+        null,
+        { enableHighAccuracy: true }
+      );
+    }
+  });
+
   return (
-    <DashboardTemplate title="Titik Penjemputan & Bank Sampah">
+    <DashboardTemplate title="Lokasi Penukaran Bank Sampah">
       <div className="flex flex-col lg:flex-row gap-6 h-[calc(100vh-180px)]">
         {/* Sidebar Daftar Lokasi */}
         <div className="w-full lg:w-[400px] flex flex-col gap-4">
@@ -119,7 +162,7 @@ export const MapsPage = () => {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 size-5" />
             <input 
               type="text" 
-              placeholder="Cari lokasi bank sampah..."
+              placeholder="Cari lokasi penukaran..."
               className="w-full pl-12 pr-4 py-4 bg-white border-2 border-slate-100 rounded-2xl focus:border-emerald-500 outline-none transition-all font-medium text-slate-700 shadow-sm"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -149,12 +192,24 @@ export const MapsPage = () => {
                       <Building2 size={20} />
                     </div>
                     <div className="flex-grow">
-                      <Typography variant="body" className="font-black text-slate-900 leading-tight mb-1">
-                        {location.name}
-                      </Typography>
+                      <div className="flex items-center justify-between gap-2 mb-1">
+                        <Typography variant="body" className="font-black text-slate-900 leading-tight">
+                          {location.name}
+                        </Typography>
+                        {location.distance !== null && (
+                          <Typography variant="caption" className="text-emerald-600 font-black whitespace-nowrap">
+                            {location.distance.toFixed(1)} km
+                          </Typography>
+                        )}
+                      </div>
                       <Typography variant="caption" className="text-slate-500 block mb-3 font-bold line-clamp-1">
                         {location.address}
                       </Typography>
+                      {selectedId === location.id && location.imageUrl && (
+                        <div className="mb-4 rounded-xl overflow-hidden h-32 w-full animate-in fade-in zoom-in duration-300">
+                          <img src={location.imageUrl} alt={location.name} className="w-full h-full object-cover" />
+                        </div>
+                      )}
                       <div className="flex items-center gap-4">
                         <div className="flex items-center gap-1.5 text-xs font-bold text-slate-400">
                           <Phone size={14} />
@@ -182,7 +237,7 @@ export const MapsPage = () => {
         <div className="flex-grow relative rounded-[2.5rem] overflow-hidden border-[3px] border-slate-100 shadow-xl bg-slate-50">
           <MapComponent 
             ref={mapRef}
-            center={[106.8456, -6.2088]}
+            center={[119.4327, -5.1476]} // Makassar Center
             zoom={11}
             className="w-full h-full"
           >
@@ -239,14 +294,13 @@ export const MapsPage = () => {
                   closeButton 
                   className="!p-0 !rounded-3xl overflow-hidden border-none shadow-2xl min-w-[280px]"
                 >
-                  <div className="bg-emerald-600 p-6 text-white relative">
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-8 -mt-8" />
-                    <Typography variant="body" className="font-black text-lg leading-tight relative z-10">
-                      {location.name}
-                    </Typography>
-                    <div className="flex items-center gap-2 mt-2 opacity-80 relative z-10">
-                      <Building2 size={14} />
-                      <span className="text-[10px] font-black uppercase tracking-widest">Fasilitas Resmi</span>
+                  <div className="relative h-40 w-full overflow-hidden">
+                    <img src={location.imageUrl} alt={location.name} className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-emerald-900/80 to-transparent" />
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <Typography variant="body" className="font-black text-white leading-tight relative z-10">
+                        {location.name}
+                      </Typography>
                     </div>
                   </div>
                   <div className="p-6 bg-white space-y-5">
@@ -272,14 +326,6 @@ export const MapsPage = () => {
                           RUTE
                         </button>
                       </a>
-                    </div>
-                    
-                    {/* Denah/Floor plan placeholder since it was requested */}
-                    <div className="pt-4 border-t-2 border-slate-50">
-                      <div className="bg-slate-50 rounded-2xl p-4 flex flex-col items-center justify-center border-2 border-dashed border-slate-200">
-                        <MapIcon size={32} className="text-slate-300 mb-2" />
-                        <Typography variant="caption" className="text-slate-400 font-bold">Denah Fasilitas Tersedia di Lokasi</Typography>
-                      </div>
                     </div>
                   </div>
                 </MarkerPopup>

@@ -9,6 +9,8 @@ export interface OrderItem {
   weightKg: number;
 }
 
+export type PaymentMethod = 'gopay' | 'ovo' | 'dana' | 'qris';
+
 export interface Order {
   id: string;
   userId: string;
@@ -19,6 +21,7 @@ export interface Order {
   damageSeverity: 'Ringan' | 'Sedang' | 'Parah';
   pickupDate: string;
   addressId: string;
+  paymentMethod: PaymentMethod;
   status: 'pending' | 'completed' | 'cancelled';
   createdAt: string;
 }

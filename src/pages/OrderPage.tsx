@@ -8,6 +8,7 @@ import { electronicTypes } from '../data/electronics';
 import { useAddressStore } from '../stores/addressStore';
 import { useOrderStore } from '../stores/orderStore';
 import { useAuthStore } from '../stores/authStore';
+import type { PaymentMethod } from '../stores/orderStore';
 import { 
   Package, 
   MapPin, 
@@ -18,7 +19,6 @@ import {
   Truck,
   ShoppingCart,
   Info,
-  Leaf,
   Trash2,
   ChevronRight,
   Laptop,
@@ -27,6 +27,10 @@ import {
   Printer,
   Refrigerator,
   Monitor,
+  Wallet,
+  QrCode,
+  Phone,
+  CreditCard,
 } from 'lucide-react';
 import { Badge } from '../components/atoms/Badge/Badge';
 
@@ -102,8 +106,21 @@ export const OrderPage = () => {
   const [transportMode, setTransportMode] = useState<'Motor' | 'Mobil Pickup' | 'Truk' | 'Gerobak'>('Motor');
   const [damageSeverity, setDamageSeverity] = useState<'Ringan' | 'Sedang' | 'Parah'>('Ringan');
   const [pickupDate, setPickupDate] = useState('');
+  const [calYear, setCalYear] = useState(() => { const d = new Date(); return d.getFullYear(); });
+  const [calMonth, setCalMonth] = useState(() => { const d = new Date(); return d.getMonth(); });
   const [selectedAddressId, setSelectedAddressId] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | ''>('');
+  const [ewalletPhone, setEwalletPhone] = useState('');
   const [toast, setToast] = useState<{show: boolean, message: string} | null>(null);
+
+  // Calendar derived values (computed at top level to satisfy Rules of Hooks)
+  const calToday = new Date(); calToday.setHours(0,0,0,0);
+  const calFirstDay = new Date(calYear, calMonth, 1).getDay();
+  const calDaysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const calMonthName = new Date(calYear, calMonth).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+  const calSelectedDate = pickupDate ? new Date(pickupDate + 'T00:00:00') : null;
+  const prevCalMonth = () => { if (calMonth === 0) { setCalMonth(11); setCalYear(y => y - 1); } else setCalMonth(m => m - 1); };
+  const nextCalMonth = () => { if (calMonth === 11) { setCalMonth(0); setCalYear(y => y + 1); } else setCalMonth(m => m + 1); };
 
   const addItem = () => {
     const newId = `item-${Date.now()}`;
@@ -167,6 +184,13 @@ export const OrderPage = () => {
 
   const grandTotal = totalEstimate + transportCost;
 
+  const paymentOptions: { id: PaymentMethod; label: string; description: string; type: 'ewallet' | 'qris' }[] = [
+    { id: 'gopay', label: 'GoPay', description: 'Bayar via saldo GoPay', type: 'ewallet' },
+    { id: 'ovo', label: 'OVO', description: 'Bayar via saldo OVO', type: 'ewallet' },
+    { id: 'dana', label: 'DANA', description: 'Bayar via saldo DANA', type: 'ewallet' },
+    { id: 'qris', label: 'QRIS', description: 'Scan kode QR universal dari semua bank & dompet digital', type: 'qris' },
+  ];
+
   const handleNextStep = () => {
     if (step === 1) {
       const isValid = items.every(item => item.name && item.weightKg > 0);
@@ -177,11 +201,12 @@ export const OrderPage = () => {
     }
     if (step === 2 && !selectedAddressId) return;
     if (step === 3 && !pickupDate) return;
+    if (step === 4 && !paymentMethod) return;
     
-    if (step < 3) {
+    if (step < 4) {
       setStep(step + 1);
     } else {
-      if (!currentUser) return;
+      if (!currentUser || !paymentMethod) return;
 
       const orderItems = items.map(item => {
         const type = electronicTypes.find((t) => t.id === item.categoryId);
@@ -203,6 +228,7 @@ export const OrderPage = () => {
         damageSeverity,
         pickupDate,
         addressId: selectedAddressId,
+        paymentMethod,
         status: 'pending',
       });
 
@@ -216,18 +242,19 @@ export const OrderPage = () => {
         {/* Top Navigation: Horizontal Stepper */}
         <div className="mb-12 max-w-3xl mx-auto px-4">
           <div className="flex items-center justify-between relative">
-            <div className="absolute left-10 right-10 top-1/2 -translate-y-1/2 h-[2px] bg-slate-200 -z-10" />
+            <div className="absolute left-6 right-6 top-5 h-[2px] bg-slate-200 -z-10" />
             {[
               { n: 1, label: 'Detail Barang', icon: Package },
               { n: 2, label: 'Alamat Lokasi', icon: MapPin },
               { n: 3, label: 'Jadwal Pickup', icon: Calendar },
+              { n: 4, label: 'Pembayaran', icon: CreditCard },
             ].map((s) => {
               const Icon = s.icon;
               const isActive = step === s.n;
               const isCompleted = step > s.n;
 
               return (
-                <div key={s.n} className="flex flex-col items-center gap-3 bg-slate-50 px-4">
+                <div key={s.n} className="flex flex-col items-center gap-3 bg-slate-50 px-2">
                   <div className={`
                     w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 z-10
                     ${isActive ? 'bg-emerald-600 text-white shadow-none' : ''}
@@ -240,7 +267,7 @@ export const OrderPage = () => {
                       <Icon size={20} />
                     )}
                   </div>
-                  <span className={`text-[12px] font-bold uppercase tracking-widest transition-colors duration-300 ${
+                  <span className={`text-[11px] font-bold uppercase tracking-widest transition-colors duration-300 text-center ${
                     isActive || isCompleted ? 'text-slate-900' : 'text-slate-400'
                   }`}>
                     {s.label}
@@ -291,13 +318,15 @@ export const OrderPage = () => {
                         </div>
 
                         {/* Column: Manual Weight */}
-                        <div className="w-full lg:w-24">
+                        <div className="w-full lg:w-28">
                           <label className="text-[12px] font-bold uppercase tracking-widest text-slate-900 mb-2 block">Berat (kg)</label>
                           <input
                             type="number"
-                            min="1"
+                            min="0.1"
+                            step="0.1"
+                            placeholder="0.0"
                             value={item.weightKg || ''}
-                            onChange={(e) => updateItem(item.id, 'weightKg', parseInt(e.target.value) || 0)}
+                            onChange={(e) => updateItem(item.id, 'weightKg', parseFloat(e.target.value) || 0)}
                             className="w-full bg-white border border-slate-300 rounded-[8px] px-3 h-11 text-[16px] tracking-[-0.16px] text-slate-900 focus:border-emerald-600 focus:border-2 transition-all outline-none text-center"
                           />
                         </div>
@@ -405,22 +434,81 @@ export const OrderPage = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <Card className="border border-slate-200 p-6 rounded-[24px] bg-white shadow-none">
                       <label className="text-[12px] font-bold uppercase tracking-widest text-slate-900 mb-4 block">Tanggal Penjemputan</label>
-                      <div className="relative mb-6">
-                        <input 
-                          id="pickupDate"
-                          type="date" 
-                          value={pickupDate}
-                          onChange={(e) => setPickupDate(e.target.value)}
-                          min={new Date().toISOString().split('T')[0]}
-                          className="w-full bg-white border border-slate-300 rounded-[8px] px-12 h-11 text-[16px] text-slate-900 focus:border-emerald-600 focus:border-2 transition-all outline-none"
-                        />
-                        <Calendar size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                      </div>
-                      <div className="flex items-start gap-3 p-4 bg-slate-50 rounded-[12px] border border-slate-100">
-                        <Info size={18} className="text-slate-500 mt-0.5 flex-shrink-0" />
-                        <Typography variant="body" className="text-[12px] text-slate-600 leading-relaxed">
-                          Penjemputan dilakukan pukul <strong>09:00 - 17:00 WIB</strong>.
-                        </Typography>
+
+                      {/* Custom Inline Calendar */}
+                      <div className="select-none">
+                        {/* Month navigation */}
+                        <div className="flex items-center justify-between mb-4">
+                          <button type="button" onClick={prevCalMonth} className="w-8 h-8 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-100 transition-colors">
+                            <ChevronRight size={16} className="rotate-180" />
+                          </button>
+                          <span className="text-[14px] font-bold text-slate-800 capitalize">{calMonthName}</span>
+                          <button type="button" onClick={nextCalMonth} className="w-8 h-8 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-100 transition-colors">
+                            <ChevronRight size={16} />
+                          </button>
+                        </div>
+
+                        {/* Day headers */}
+                        <div className="grid grid-cols-7 mb-2">
+                          {['Min','Sen','Sel','Rab','Kam','Jum','Sab'].map(d => (
+                            <div key={d} className="text-center text-[10px] font-bold uppercase tracking-wider text-slate-400 py-1">{d}</div>
+                          ))}
+                        </div>
+
+                        {/* Day grid */}
+                        <div className="grid grid-cols-7 gap-y-1">
+                          {Array.from({ length: calFirstDay }).map((_, i) => (
+                            <div key={`e-${i}`} />
+                          ))}
+                          {Array.from({ length: calDaysInMonth }).map((_, i) => {
+                            const day = i + 1;
+                            const cellDate = new Date(calYear, calMonth, day);
+                            const isPast = cellDate < calToday;
+                            const isToday = cellDate.getTime() === calToday.getTime();
+                            const isSelected = calSelectedDate?.getDate() === day &&
+                              calSelectedDate?.getMonth() === calMonth &&
+                              calSelectedDate?.getFullYear() === calYear;
+                            const dateStr = `${calYear}-${String(calMonth + 1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+
+                            return (
+                              <button
+                                key={day}
+                                type="button"
+                                disabled={isPast}
+                                onClick={() => setPickupDate(dateStr)}
+                                className={[
+                                  'mx-auto w-9 h-9 rounded-full flex items-center justify-center text-[13px] font-medium transition-all duration-150',
+                                  isSelected ? 'bg-emerald-600 text-white font-bold shadow-sm scale-105' : '',
+                                  isToday && !isSelected ? 'ring-2 ring-emerald-500 text-emerald-700 font-bold' : '',
+                                  !isSelected && !isToday && !isPast ? 'text-slate-700 hover:bg-emerald-50 hover:text-emerald-700' : '',
+                                  isPast ? 'text-slate-300 cursor-not-allowed' : 'cursor-pointer',
+                                ].join(' ')}
+                              >
+                                {day}
+                              </button>
+                            );
+                          })}
+                        </div>
+
+                        {/* Selected date display */}
+                        {pickupDate ? (
+                          <div className="mt-4 flex items-center gap-2.5 p-3 bg-emerald-50 border border-emerald-100 rounded-[12px] animate-in fade-in duration-200">
+                            <div className="w-7 h-7 rounded-full bg-emerald-600 flex items-center justify-center flex-shrink-0">
+                              <Check size={14} className="text-white" strokeWidth={3} />
+                            </div>
+                            <div>
+                              <p className="text-[11px] font-bold uppercase tracking-widest text-emerald-600 mb-0.5">Dipilih</p>
+                              <p className="text-[13px] font-bold text-emerald-900">
+                                {new Date(pickupDate + 'T00:00:00').toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+                              </p>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="mt-4 flex items-center gap-2 p-3 bg-slate-50 border border-slate-100 rounded-[12px]">
+                            <Info size={14} className="text-slate-400 flex-shrink-0" />
+                            <p className="text-[12px] text-slate-500">Penjemputan pukul <strong>09:00 – 17:00 WIB</strong></p>
+                          </div>
+                        )}
                       </div>
                     </Card>
 
@@ -488,6 +576,107 @@ export const OrderPage = () => {
                 </div>
               </div>
             )}
+
+            {step === 4 && (
+              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="flex items-end justify-between mb-2">
+                  <div>
+                    <Typography variant="h2" className="text-[28px] font-medium leading-tight">Metode Pembayaran</Typography>
+                    <Typography variant="body" className="text-slate-500 mt-2 text-[16px] leading-relaxed">Pilih cara pembayaran untuk pesanan ini.</Typography>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  {/* E-Wallet Options */}
+                  <p className="text-[12px] font-bold uppercase tracking-widest text-slate-400">Dompet Digital</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    {paymentOptions.filter(p => p.type === 'ewallet').map((option) => {
+                      const isSelected = paymentMethod === option.id;
+                      const colors: Record<string, string> = {
+                        gopay: 'from-green-400 to-green-600',
+                        ovo: 'from-purple-500 to-purple-700',
+                        dana: 'from-blue-400 to-blue-600',
+                      };
+                      return (
+                        <button
+                          key={option.id}
+                          type="button"
+                          onClick={() => setPaymentMethod(option.id)}
+                          className={`
+                            relative flex flex-col items-center justify-center gap-3 p-6 rounded-[20px] border-2 transition-all duration-200 overflow-hidden text-center
+                            ${isSelected ? 'border-emerald-600 bg-emerald-50/20 shadow-md' : 'border-slate-200 bg-white hover:border-emerald-400'}
+                          `}
+                        >
+                          <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${colors[option.id]} flex items-center justify-center text-white shadow-sm`}>
+                            <Wallet size={22} />
+                          </div>
+                          <span className={`font-bold text-[16px] tracking-tight ${isSelected ? 'text-emerald-900' : 'text-slate-800'}`}>{option.label}</span>
+                          <span className="text-[12px] text-slate-500 leading-tight">{option.description}</span>
+                          {isSelected && <Check size={18} className="absolute top-3 right-3 text-emerald-600" strokeWidth={3} />}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* QRIS Option */}
+                  <p className="text-[12px] font-bold uppercase tracking-widest text-slate-400 mt-6">QRIS</p>
+                  {paymentOptions.filter(p => p.type === 'qris').map((option) => {
+                    const isSelected = paymentMethod === option.id;
+                    return (
+                      <button
+                        key={option.id}
+                        type="button"
+                        onClick={() => setPaymentMethod(option.id)}
+                        className={`
+                          w-full flex items-center gap-5 p-5 rounded-[20px] border-2 transition-all duration-200 text-left
+                          ${isSelected ? 'border-emerald-600 bg-emerald-50/20 shadow-md' : 'border-slate-200 bg-white hover:border-emerald-400'}
+                        `}
+                      >
+                        <div className="w-14 h-14 rounded-[14px] bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center text-white flex-shrink-0">
+                          <QrCode size={26} />
+                        </div>
+                        <div className="flex-grow">
+                          <span className={`font-bold text-[18px] block mb-1 ${isSelected ? 'text-emerald-900' : 'text-slate-900'}`}>{option.label}</span>
+                          <span className="text-[13px] text-slate-500">{option.description}</span>
+                        </div>
+                        {isSelected
+                          ? <Check size={20} className="text-emerald-600 flex-shrink-0" strokeWidth={3} />
+                          : <ChevronRight size={20} className="text-slate-300 flex-shrink-0" />}
+                      </button>
+                    );
+                  })}
+
+                  {/* Input nomor HP jika E-Wallet dipilih */}
+                  {paymentMethod && paymentMethod !== 'qris' && (
+                    <Card className="p-5 border border-slate-200 rounded-[16px] shadow-none animate-in fade-in slide-in-from-bottom-2 duration-300">
+                      <label className="text-[12px] font-bold uppercase tracking-widest text-slate-900 mb-2 block">
+                        <Phone size={14} className="inline mr-1.5 -mt-0.5" />
+                        Nomor HP Terdaftar di {paymentOptions.find(p => p.id === paymentMethod)?.label}
+                      </label>
+                      <input
+                        type="tel"
+                        placeholder="Contoh: 08123456789"
+                        value={ewalletPhone}
+                        onChange={(e) => setEwalletPhone(e.target.value)}
+                        className="w-full bg-white border border-slate-300 rounded-[8px] px-3 h-11 text-[16px] tracking-[-0.16px] text-slate-900 focus:border-emerald-600 focus:border-2 transition-all outline-none placeholder:text-slate-400"
+                      />
+                    </Card>
+                  )}
+
+                  {/* Preview QR code jika QRIS dipilih */}
+                  {paymentMethod === 'qris' && (
+                    <Card className="p-6 border border-slate-200 rounded-[20px] shadow-none animate-in fade-in duration-300 flex flex-col items-center gap-4">
+                      <p className="text-[13px] text-slate-500 font-medium">Kode QR akan muncul setelah pesanan dikonfirmasi</p>
+                      <div className="w-44 h-44 bg-slate-100 rounded-[16px] flex flex-col items-center justify-center border-2 border-dashed border-slate-300 gap-3">
+                        <QrCode size={52} className="text-slate-400" />
+                        <span className="text-[11px] text-slate-400 font-bold uppercase tracking-widest">Preview QR</span>
+                      </div>
+                      <p className="text-[12px] text-slate-400 text-center">Scan menggunakan aplikasi bank atau dompet digital manapun yang mendukung QRIS</p>
+                    </Card>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Right Column (Summary - 42% width approx ~ 5 cols) */}
@@ -495,7 +684,7 @@ export const OrderPage = () => {
             <Card variant="feature" className="sticky top-24 border border-slate-200 p-6 shadow-[0_1px_4px_rgba(20,22,26,0.08)] rounded-[16px] bg-white">
               <div className="flex items-center justify-between mb-6 border-b border-slate-100 pb-4">
                 <Typography variant="h3" className="text-[20px] font-medium text-slate-900">Ringkasan Pesanan</Typography>
-                <span className="text-[12px] font-medium text-slate-500">Langkah {step} dari 3</span>
+                <span className="text-[12px] font-medium text-slate-500">Langkah {step} dari 4</span>
               </div>
 
               <div className="space-y-4 mb-6">
@@ -545,10 +734,11 @@ export const OrderPage = () => {
                   disabled={
                     (step === 1 && (items.length === 0 || !items[0].name)) ||
                     (step === 2 && !selectedAddressId) ||
-                    (step === 3 && !pickupDate)
+                    (step === 3 && !pickupDate) ||
+                    (step === 4 && !paymentMethod)
                   }
                 >
-                  <span className="text-[14px] font-bold tracking-[-0.14px]">{step === 3 ? 'KONFIRMASI SEKARANG' : 'LANJUTKAN'}</span>
+                  <span className="text-[14px] font-bold tracking-[-0.14px]">{step === 4 ? 'KONFIRMASI SEKARANG' : 'LANJUTKAN'}</span>
                 </Button>
                 
                 {step > 1 && (

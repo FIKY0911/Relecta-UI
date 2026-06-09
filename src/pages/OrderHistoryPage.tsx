@@ -3,7 +3,7 @@ import { Card } from '../components/atoms/Card/Card';
 import { Typography } from '../components/atoms/Typography/Typography';
 import { useOrderStore } from '../stores/orderStore';
 import { useAuthStore } from '../stores/authStore';
-import { Package, Calendar, MapPin, ChevronRight, Truck, AlertTriangle } from 'lucide-react';
+import { Package, Calendar, MapPin, ChevronRight, Truck, AlertTriangle, Wallet, QrCode } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/atoms/Button/Button';
 
@@ -13,6 +13,13 @@ const transportCosts: Record<string, number> = {
   'Mobil Pickup': 0,
   'Truk': 0,
   'Gerobak': 0,
+};
+
+const paymentLabels: Record<string, { label: string; color: string }> = {
+  gopay:  { label: 'GoPay',  color: 'bg-green-100 text-green-800 border-green-200' },
+  ovo:    { label: 'OVO',    color: 'bg-purple-100 text-purple-800 border-purple-200' },
+  dana:   { label: 'DANA',   color: 'bg-blue-100 text-blue-800 border-blue-200' },
+  qris:   { label: 'QRIS',   color: 'bg-slate-100 text-slate-800 border-slate-200' },
 };
 
 // Mapping style status untuk mempermudah maintenance & readability
@@ -80,6 +87,16 @@ export const OrderHistoryPage = () => {
                               <AlertTriangle size={12} className="text-slate-400" />
                               <span className="font-medium text-slate-600">Kerusakan: {order.damageSeverity}</span>
                             </div>
+                            {order.paymentMethod && (
+                              <div className={`flex items-center gap-1.5 text-xs px-2 py-0.5 rounded-md border font-bold ${
+                                paymentLabels[order.paymentMethod]?.color || 'bg-slate-100 text-slate-700 border-slate-200'
+                              }`}>
+                                {order.paymentMethod === 'qris'
+                                  ? <QrCode size={11} />
+                                  : <Wallet size={11} />}
+                                {paymentLabels[order.paymentMethod]?.label || order.paymentMethod.toUpperCase()}
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>

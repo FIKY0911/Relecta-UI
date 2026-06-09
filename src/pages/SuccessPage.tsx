@@ -4,7 +4,7 @@ import { Card } from '../components/atoms/Card/Card';
 import { Typography } from '../components/atoms/Typography/Typography';
 import { Button } from '../components/atoms/Button/Button';
 import { useOrderStore } from '../stores/orderStore';
-import { CheckCircle2, ArrowRight, Package, Truck, AlertTriangle } from 'lucide-react';
+import { CheckCircle2, ArrowRight, Package, Truck, AlertTriangle, Wallet, QrCode } from 'lucide-react';
 import { useMemo } from 'react';
 
 // Mapping ongkos transportasi standar industri agar konsisten di seluruh halaman
@@ -107,6 +107,21 @@ export const SuccessPage = () => {
                   {order.damageSeverity || 'Tidak Spesifik'}
                 </span>
               </div>
+
+              {/* Tampilkan Metode Pembayaran */}
+              {order.paymentMethod && (
+                <div className="flex justify-between text-sm text-slate-600 items-center">
+                  <span className="flex items-center gap-1.5">
+                    {order.paymentMethod === 'qris'
+                      ? <QrCode size={14} className="text-slate-400" />
+                      : <Wallet size={14} className="text-slate-400" />}
+                    Metode Pembayaran
+                  </span>
+                  <span className="font-semibold text-ink-deep uppercase text-xs bg-slate-100 px-2.5 py-0.5 rounded-full">
+                    {order.paymentMethod}
+                  </span>
+                </div>
+              )}
 
               {/* Garis batas pembayaran total akhir */}
               <div className="flex justify-between items-center text-sm font-bold pt-4 border-t-2 border-slate-200">
