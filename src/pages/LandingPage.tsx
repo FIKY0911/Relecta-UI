@@ -1,5 +1,6 @@
 // src/pages/LandingPage.tsx
 
+import { useState } from "react";
 import {
   BadgeCheck,
   CalendarDays,
@@ -18,6 +19,7 @@ import {
   Star,
   Truck,
   Users,
+  X,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import LogoImage from "../assets/Logo.jpeg";
@@ -124,6 +126,8 @@ const getProblemStyle = (color: string) => {
 };
 
 export const LandingPage = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-white font-sans text-slate-900">
       {/* Background decoration */}
@@ -190,10 +194,67 @@ export const LandingPage = () => {
           </Link>
         </div>
 
-        <button className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 lg:hidden">
-          <Menu size={22} />
+        <button 
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 lg:hidden"
+        >
+          {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </header>
+
+      {/* Mobile Menu Dropdown */}
+      {mobileMenuOpen && (
+        <div className="fixed left-0 right-0 top-[6.5rem] z-40 mx-auto w-[94%] max-w-7xl lg:hidden">
+          <div className="rounded-3xl border border-slate-200 bg-white/95 p-6 shadow-2xl backdrop-blur-xl">
+            <nav className="mb-6 flex flex-col gap-4 border-b border-slate-100 pb-6">
+              <a 
+                href="#" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-base font-semibold text-emerald-600 text-center"
+              >
+                Beranda
+              </a>
+              <a 
+                href="#problem" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-base font-semibold text-slate-700 transition hover:text-emerald-600 text-center"
+              >
+                Masalah
+              </a>
+              <a 
+                href="#fitur" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-base font-semibold text-slate-700 transition hover:text-emerald-600 text-center"
+              >
+                Fitur
+              </a>
+              <a 
+                href="#cara-kerja" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-base font-semibold text-slate-700 transition hover:text-emerald-600 text-center"
+              >
+                Cara Kerja
+              </a>
+            </nav>
+            <div className="flex flex-col gap-3">
+              <Link
+                to="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full rounded-full border border-emerald-500 px-7 py-3 text-center text-sm font-bold text-emerald-600 transition hover:bg-emerald-50"
+              >
+                Masuk
+              </Link>
+              <Link
+                to="/register"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full rounded-full bg-emerald-600 px-7 py-3 text-center text-sm font-bold text-white shadow-lg shadow-emerald-500/25 transition hover:bg-emerald-700"
+              >
+                Jadwalkan Pickup
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Hero */}
       <section className="mx-auto grid w-[90%] max-w-7xl items-center gap-14 pb-20 pt-40 lg:grid-cols-2 lg:pt-48">

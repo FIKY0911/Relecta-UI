@@ -155,9 +155,9 @@ export const MapsPage = () => {
 
   return (
     <DashboardTemplate title="Lokasi Penukaran Bank Sampah">
-      <div className="flex flex-col lg:flex-row gap-6 h-[calc(100vh-180px)]">
+      <div className="flex flex-col lg:flex-row gap-6 h-auto lg:h-[calc(100vh-180px)]">
         {/* Sidebar Daftar Lokasi */}
-        <div className="w-full lg:w-[400px] flex flex-col gap-4">
+        <div className="w-full lg:w-[400px] flex flex-col gap-4 max-h-[400px] lg:max-h-none">
           <div className="relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 size-5" />
             <input 
@@ -234,7 +234,7 @@ export const MapsPage = () => {
         </div>
 
         {/* Map Area */}
-        <div className="flex-grow relative rounded-[2.5rem] overflow-hidden border-[3px] border-slate-100 shadow-xl bg-slate-50">
+        <div className="flex-grow relative rounded-[2.5rem] overflow-hidden border-[3px] border-slate-100 shadow-xl bg-slate-50 h-[600px] lg:h-auto">
           <MapComponent 
             ref={mapRef}
             center={[119.4327, -5.1476]} // Makassar Center
